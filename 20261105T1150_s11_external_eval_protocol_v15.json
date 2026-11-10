@@ -1,0 +1,1183 @@
+{
+ "schema": "s11-external-eval-protocol-v15",
+ "version": "v15",
+ "status": "FROZEN",
+ "created_utc": "2026-11-05T11:50:23Z",
+ "author": "worker-EV8 (coordinator: main (Claude), channel/04 2026-11-05 ~11:50 and rulings ~12:05)",
+ "extends": {
+  "v14": {
+   "path": "docs/reports/S11/20261101T1745_s11_external_eval_protocol.json",
+   "sha256": "82cd21e086c1824d24f8d1d5069053c1556bf0a99d525de8342798efbb6e5f0e"
+  }
+ },
+ "supersedes_drafts": [
+  "docs/reports/S11/20261104T1320_s11_protocol_v15_DRAFT.md",
+  "docs/reports/S11/20261104T2045_s11_protocol_v15_DRAFT_r2.md",
+  "docs/reports/S11/20261104T2300_s11_protocol_v15_DRAFT_r3.md"
+ ],
+ "audit": "docs/reports/consult/20261104T1921Z_v15_draft_audit.md (GO WITH FIXES; must-fixes closed in r2/r3)",
+ "single_look": "every test step runs once, through tools/v15_guard.py; no test output exists at freeze",
+ "benchmarks": {
+  "chexpert_test": {
+   "ref": "data/external/chexpert_test/ref.parquet",
+   "ref_sha256": "a978b40748a364aeac39c6000f7c066e58c4ca9368baa000ffaf1038ad0d873b",
+   "mapping": "chexpert",
+   "n": 500,
+   "patients": 500,
+   "normal_column": "No Finding",
+   "normal_claim_excludes": [
+    "Support Devices"
+   ],
+   "reference_gen": null,
+   "lists": {
+    "chexbert": {
+     "macro": [
+      "Enlarged Cardiomediastinum",
+      "Cardiomegaly",
+      "Lung Opacity",
+      "Edema",
+      "Consolidation",
+      "Pneumonia",
+      "Atelectasis",
+      "Pleural Effusion",
+      "Support Devices"
+     ],
+     "five": [
+      "Cardiomegaly",
+      "Edema",
+      "Consolidation",
+      "Atelectasis",
+      "Pleural Effusion"
+     ],
+     "support": {
+      "Enlarged Cardiomediastinum": 253,
+      "Cardiomegaly": 151,
+      "Lung Opacity": 264,
+      "Lung Lesion": 8,
+      "Edema": 78,
+      "Consolidation": 29,
+      "Pneumonia": 11,
+      "Atelectasis": 153,
+      "Pneumothorax": 9,
+      "Pleural Effusion": 104,
+      "Pleural Other": 4,
+      "Fracture": 5,
+      "Support Devices": 261
+     },
+     "positive_patients": {
+      "Enlarged Cardiomediastinum": 253,
+      "Cardiomegaly": 151,
+      "Lung Opacity": 264,
+      "Lung Lesion": 8,
+      "Edema": 78,
+      "Consolidation": 29,
+      "Pneumonia": 11,
+      "Atelectasis": 153,
+      "Pneumothorax": 9,
+      "Pleural Effusion": 104,
+      "Pleural Other": 4,
+      "Fracture": 5,
+      "Support Devices": 261
+     }
+    },
+    "srrbert": {
+     "macro": [
+      "Cardiomegaly",
+      "Edema",
+      "Consolidation",
+      "Pneumonia",
+      "Atelectasis",
+      "Pleural Effusion",
+      "Support Devices"
+     ],
+     "five": [
+      "Cardiomegaly",
+      "Edema",
+      "Consolidation",
+      "Atelectasis",
+      "Pleural Effusion"
+     ],
+     "support": {
+      "Enlarged Cardiomediastinum": 253,
+      "Cardiomegaly": 151,
+      "Lung Opacity": 264,
+      "Lung Lesion": 8,
+      "Edema": 78,
+      "Consolidation": 29,
+      "Pneumonia": 11,
+      "Atelectasis": 153,
+      "Pneumothorax": 9,
+      "Pleural Effusion": 104,
+      "Pleural Other": 4,
+      "Fracture": 5,
+      "Support Devices": 261
+     },
+     "positive_patients": {
+      "Enlarged Cardiomediastinum": 253,
+      "Cardiomegaly": 151,
+      "Lung Opacity": 264,
+      "Lung Lesion": 8,
+      "Edema": 78,
+      "Consolidation": 29,
+      "Pneumonia": 11,
+      "Atelectasis": 153,
+      "Pneumothorax": 9,
+      "Pleural Effusion": 104,
+      "Pleural Other": 4,
+      "Fracture": 5,
+      "Support Devices": 261
+     }
+    }
+   },
+   "srr_readable_findings": [
+    "Cardiomegaly",
+    "Lung Lesion",
+    "Edema",
+    "Consolidation",
+    "Pneumonia",
+    "Atelectasis",
+    "Pneumothorax",
+    "Pleural Effusion",
+    "Pleural Other",
+    "Fracture",
+    "Support Devices"
+   ],
+   "sft": "data/external/chexpert_test/sft.jsonl",
+   "sft_sha256": "3becaf64a9da69829adf0e935b29190471774292b6c98f3c1518e67f664ca15d"
+  },
+  "vindr_test": {
+   "ref": "data/external/vindr_test_s0rebuild_20261028T170354Z/ref.parquet",
+   "ref_sha256": "b9434c4cc4b9b4174425182f474113d7da98e3d1d505b90633d3303d80ff370a",
+   "mapping": "vindr",
+   "n": 3000,
+   "patients": 3000,
+   "normal_column": "No finding",
+   "normal_claim_excludes": [],
+   "reference_gen": null,
+   "lists": {
+    "chexbert": {
+     "macro": [
+      "Cardiomegaly",
+      "Pleural effusion",
+      "Pneumothorax",
+      "Consolidation",
+      "Atelectasis",
+      "Nodule/Mass",
+      "Fracture (any)"
+     ],
+     "five": [
+      "Cardiomegaly",
+      "Pleural effusion",
+      "Consolidation",
+      "Atelectasis"
+     ],
+     "support": {
+      "Cardiomegaly": 309,
+      "Pleural effusion": 111,
+      "Pneumothorax": 18,
+      "Consolidation": 96,
+      "Atelectasis": 86,
+      "Edema": 0,
+      "Nodule/Mass": 176,
+      "Fracture (any)": 13
+     },
+     "positive_patients": {
+      "Cardiomegaly": 309,
+      "Pleural effusion": 111,
+      "Pneumothorax": 18,
+      "Consolidation": 96,
+      "Atelectasis": 86,
+      "Edema": 0,
+      "Nodule/Mass": 176,
+      "Fracture (any)": 13
+     }
+    },
+    "srrbert": {
+     "macro": [
+      "Cardiomegaly",
+      "Pleural effusion",
+      "Pneumothorax",
+      "Consolidation",
+      "Atelectasis",
+      "Nodule/Mass",
+      "Fracture (any)"
+     ],
+     "five": [
+      "Cardiomegaly",
+      "Pleural effusion",
+      "Consolidation",
+      "Atelectasis"
+     ],
+     "support": {
+      "Cardiomegaly": 309,
+      "Pleural effusion": 111,
+      "Pneumothorax": 18,
+      "Consolidation": 96,
+      "Atelectasis": 86,
+      "Edema": 0,
+      "Nodule/Mass": 176,
+      "Fracture (any)": 13
+     },
+     "positive_patients": {
+      "Cardiomegaly": 309,
+      "Pleural effusion": 111,
+      "Pneumothorax": 18,
+      "Consolidation": 96,
+      "Atelectasis": 86,
+      "Edema": 0,
+      "Nodule/Mass": 176,
+      "Fracture (any)": 13
+     }
+    }
+   },
+   "srr_readable_findings": [
+    "Cardiomegaly",
+    "Pleural effusion",
+    "Pneumothorax",
+    "Consolidation",
+    "Atelectasis",
+    "Edema",
+    "Nodule/Mass",
+    "Fracture (any)"
+   ],
+   "sft": "data/external/vindr_test_s0rebuild_20261028T170354Z/sft.jsonl",
+   "sft_sha256": "517825cf80f0cfe514f01e32158323fc785cac30179199e89e95cbba62af38e6"
+  },
+  "mimic_test": {
+   "ref": "data/external/mimic_cxr_test_20261104T2009Z/ref.parquet",
+   "ref_sha256": "501d6b2b200b4ea70080a62593c2da200c1a52f2099c57522ac7e03f4587b99d",
+   "mapping": "chexpert",
+   "n": 2210,
+   "patients": 285,
+   "normal_column": "No Finding",
+   "normal_claim_excludes": [
+    "Support Devices"
+   ],
+   "reference_gen": "data/external/mimic_cxr_test_20261104T2009Z/reference",
+   "lists": {
+    "chexbert": {
+     "macro": [
+      "Enlarged Cardiomediastinum",
+      "Cardiomegaly",
+      "Lung Opacity",
+      "Lung Lesion",
+      "Edema",
+      "Consolidation",
+      "Pneumonia",
+      "Atelectasis",
+      "Pneumothorax",
+      "Pleural Effusion",
+      "Pleural Other",
+      "Fracture",
+      "Support Devices"
+     ],
+     "five": [
+      "Cardiomegaly",
+      "Edema",
+      "Consolidation",
+      "Atelectasis",
+      "Pleural Effusion"
+     ],
+     "support": {
+      "Enlarged Cardiomediastinum": 620,
+      "Cardiomegaly": 955,
+      "Lung Opacity": 852,
+      "Lung Lesion": 143,
+      "Edema": 585,
+      "Consolidation": 209,
+      "Pneumonia": 292,
+      "Atelectasis": 751,
+      "Pneumothorax": 64,
+      "Pleural Effusion": 855,
+      "Pleural Other": 85,
+      "Fracture": 123,
+      "Support Devices": 896
+     },
+     "positive_patients": {
+      "Enlarged Cardiomediastinum": 208,
+      "Cardiomegaly": 207,
+      "Lung Opacity": 219,
+      "Lung Lesion": 77,
+      "Edema": 149,
+      "Consolidation": 102,
+      "Pneumonia": 135,
+      "Atelectasis": 212,
+      "Pneumothorax": 30,
+      "Pleural Effusion": 185,
+      "Pleural Other": 43,
+      "Fracture": 64,
+      "Support Devices": 184
+     }
+    },
+    "srrbert": {
+     "macro": [
+      "Cardiomegaly",
+      "Lung Lesion",
+      "Edema",
+      "Consolidation",
+      "Pneumonia",
+      "Atelectasis",
+      "Pneumothorax",
+      "Pleural Effusion",
+      "Pleural Other",
+      "Fracture",
+      "Support Devices"
+     ],
+     "five": [
+      "Cardiomegaly",
+      "Edema",
+      "Consolidation",
+      "Atelectasis",
+      "Pleural Effusion"
+     ],
+     "support": {
+      "Enlarged Cardiomediastinum": 158,
+      "Cardiomegaly": 862,
+      "Lung Opacity": 1407,
+      "Lung Lesion": 162,
+      "Edema": 715,
+      "Consolidation": 954,
+      "Pneumonia": 349,
+      "Atelectasis": 783,
+      "Pneumothorax": 69,
+      "Pleural Effusion": 865,
+      "Pleural Other": 166,
+      "Fracture": 100,
+      "Support Devices": 476
+     },
+     "positive_patients": {
+      "Enlarged Cardiomediastinum": 88,
+      "Cardiomegaly": 185,
+      "Lung Opacity": 264,
+      "Lung Lesion": 76,
+      "Edema": 162,
+      "Consolidation": 234,
+      "Pneumonia": 143,
+      "Atelectasis": 212,
+      "Pneumothorax": 32,
+      "Pleural Effusion": 183,
+      "Pleural Other": 76,
+      "Fracture": 49,
+      "Support Devices": 139
+     }
+    }
+   },
+   "srr_readable_findings": [
+    "Cardiomegaly",
+    "Lung Lesion",
+    "Edema",
+    "Consolidation",
+    "Pneumonia",
+    "Atelectasis",
+    "Pneumothorax",
+    "Pleural Effusion",
+    "Pleural Other",
+    "Fracture",
+    "Support Devices"
+   ],
+   "reference_gen_label_sha256": {
+    "chexbert_labels.parquet": "768ce084a4d37a45b50c8c8667e306d104fa0f6c3165ad7f34397fc5506aceaf",
+    "srrbert_labels.parquet": "02efb8e2d04b6f49b7eda3138c316106e52c15af86a28a738da88b58707555ad"
+   },
+   "sft": "data/external/mimic_cxr_test_20261104T2009Z/sft.jsonl",
+   "sft_sha256": "5d18e454bd9a07735851070348b75d0d103bd414b3631821f055d53c78bdc91d"
+  }
+ },
+ "mimic_build": {
+  "dir": "data/external/mimic_cxr_test_20261104T2009Z",
+  "n": 2210,
+  "patients": 285,
+  "selection": {
+   "no_findings_section": 831,
+   "ok": 2210
+  }
+ },
+ "finding_lists_rule": "per labeller: MIN_SUPPORT 10 positives and >= 5 positive patients on that labeller's reference; SRR-BERT lists only findings named exactly in SRR-BERT's own label map (EC, Lung Opacity excluded)",
+ "headline_arm": {
+  "name": "SWRD_headline",
+  "definition": "tagged 9B generator (R-all v8 Qwen3.5-9B + status_prob classifier-tag block) on test inputs tagged by e2e_raddino_merged_tta_site_devices (configs_v5/e2e_raddino_merged_tta__site_wilson90__t22, device run device_heads_e2e); classifier-consistency re-ranking k = 4 (configs/sota/rerank_1.yaml, rule matcher configs/sota/rule_matcher_1.yaml); SWRD-constrained repair with configs/template_sentences_v2_2_1.yaml and the device heads",
+  "generator_runs": {
+   "v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s43": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s43/checkpoint-2000",
+   "v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s29": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s29/checkpoint-2000",
+   "v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s71": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s71/checkpoint-2000"
+  },
+  "seeds": [
+   29,
+   43,
+   71
+  ],
+  "checkpoint_rule": "lowest validation loss over the saved 100-step checkpoints, ties earlier (external.selected_checkpoint)",
+  "tag_block": {
+   "config": "configs/sota/tag_block_1.yaml",
+   "variant": "status_prob",
+   "code": "src/swrd/sota/tags.py"
+  },
+  "decoding": {
+   "sampling_for_rerank": "configs/sota/rerank_1.yaml (k 4, T 0.7, top_p 1.0, seed 0)",
+   "mm_kwargs": {
+    "max_pixels": 1048576,
+    "min_pixels": 4096
+   },
+   "generation_settings": "configs/pipeline_v1.yaml evaluate block (as every dev row)"
+  },
+  "decision_rule_for_tags": "stored float32 probability promoted to float64 >= float64 threshold of the row domain (swrd.sota.tags; identical to the dev selection inputs); predict-folds tag columns are not used, disagreements are counted"
+ },
+ "selection": {
+  "rule_governing": "highest mean over VinDr dev + ReXGradient val of mean(CheXbert, SRR-BERT positive-only macro), 3-seed mean; eligible iff dev FCR <= the cap on every dev set; ties -> generator (main channel/04 ~19:45, restated ~21:10 and ~22:50; r3 \u00a72)",
+  "cap_ruling": "cap = comparator dev FCR read from the declared source score file; CheXpert val LLaVA-Rad 5/26 = 0.19231 exactly (stored 0.1923 is a rounding artifact of the same quantity); '<=' includes equality (main 2026-11-05 ~11:50)",
+  "amendment4_transcription_error": "docs/reports/S9/20261104T2120_..._amendment4.json states 'mean over 3 dev sets'; that line is a carried-over transcription error (main 2026-11-05 ruling). Disclosed: the 3-set reading would select the template.",
+  "tables": {
+   "vindr_rex_metric": {
+    "chexbert_cap": {
+     "arm": "generator reranked+constrained",
+     "rule": "wilson90",
+     "metric": 0.43134212759438584
+    },
+    "per_labeller_cap": {
+     "arm": "generator reranked+constrained",
+     "rule": "wilson90",
+     "metric": 0.43134212759438584
+    }
+   },
+   "three_set_metric_disclosed": {
+    "chexbert_cap": {
+     "arm": "template",
+     "rule": "wilson90",
+     "metric": 0.5179424986333357
+    },
+    "per_labeller_cap": {
+     "arm": "template",
+     "rule": "wilson90",
+     "metric": 0.5179424986333357
+    }
+   },
+   "rounded_cap_disclosed": {
+    "arm": "generator reranked+constrained",
+    "rule": "lso",
+    "metric": 0.4211023692593984,
+    "table": "outputs/eval/sota_gen_20261104T0830Z/final_20261105/final.json"
+   },
+   "per_labeller_budgets": {
+    "chexpert_val_dev": 0.19230769230769232,
+    "vindr_train_dev": 0.0404,
+    "rexgradient_val": 0.1675
+   },
+   "chexbert_budgets": {
+    "chexpert_val_dev": 0.19230769230769232,
+    "vindr_train_dev": 0.038551951104842504,
+    "rexgradient_val": 0.1358574610244989
+   },
+   "candidates": [
+    {
+     "arm": "generator plain",
+     "rule": "site",
+     "metric_vindr_rex": 0.35835958743924123,
+     "metric_3sets": 0.38189143891732735,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.012820512820512822,
+       "srrbert": 0.012820512820512822
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.0037611659614480487,
+       "srrbert": 0.012693935119887164
+      },
+      "rexgradient_val": {
+       "chexbert": 0.021529324424647365,
+       "srrbert": 0.04227642276422764
+      }
+     }
+    },
+    {
+     "arm": "generator constrained",
+     "rule": "site",
+     "metric_vindr_rex": 0.4277076216549708,
+     "metric_3sets": 0.5087528484147407,
+     "eligible_chexbert_cap": false,
+     "eligible_per_labeller_cap": false,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.23076923076923075,
+       "srrbert": 0.23076923076923075
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.010186491145588466,
+       "srrbert": 0.01206707412631249
+      },
+      "rexgradient_val": {
+       "chexbert": 0.09205642167780252,
+       "srrbert": 0.14688346883468834
+      }
+     }
+    },
+    {
+     "arm": "generator reranked",
+     "rule": "site",
+     "metric_vindr_rex": 0.4130547795501802,
+     "metric_3sets": 0.44287445877900317,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.16666666666666666,
+       "srrbert": 0.12820512820512822
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.0072089014261087605,
+       "srrbert": 0.008932769158439116
+      },
+      "rexgradient_val": {
+       "chexbert": 0.05642167780252413,
+       "srrbert": 0.07967479674796747
+      }
+     }
+    },
+    {
+     "arm": "generator reranked+constrained",
+     "rule": "site",
+     "metric_vindr_rex": 0.4330762354340239,
+     "metric_3sets": 0.5140590092677025,
+     "eligible_chexbert_cap": false,
+     "eligible_per_labeller_cap": false,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.2564102564102564,
+       "srrbert": 0.2564102564102564
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.011440213132737817,
+       "srrbert": 0.012223789374706159
+      },
+      "rexgradient_val": {
+       "chexbert": 0.09502598366740905,
+       "srrbert": 0.14742547425474256
+      }
+     }
+    },
+    {
+     "arm": "template",
+     "rule": "site",
+     "metric_vindr_rex": 0.4238900300399803,
+     "metric_3sets": 0.5198179063306613,
+     "eligible_chexbert_cap": false,
+     "eligible_per_labeller_cap": false,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.23076923076923078,
+       "srrbert": 0.23076923076923078
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.009873060648801129,
+       "srrbert": 0.011753643629525154
+      },
+      "rexgradient_val": {
+       "chexbert": 0.08685968819599109,
+       "srrbert": 0.14146341463414633
+      }
+     }
+    },
+    {
+     "arm": "generator plain",
+     "rule": "wilson90",
+     "metric_vindr_rex": 0.3599790223990055,
+     "metric_3sets": 0.38327050100191284,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.012820512820512822,
+       "srrbert": 0.012820512820512822
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.003917881209841718,
+       "srrbert": 0.012693935119887164
+      },
+      "rexgradient_val": {
+       "chexbert": 0.02301410541945063,
+       "srrbert": 0.04227642276422764
+      }
+     }
+    },
+    {
+     "arm": "generator constrained",
+     "rule": "wilson90",
+     "metric_vindr_rex": 0.42734937519680183,
+     "metric_3sets": 0.5056275466595902,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.19230769230769232,
+       "srrbert": 0.19230769230769232
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.010343206393982134,
+       "srrbert": 0.01206707412631249
+      },
+      "rexgradient_val": {
+       "chexbert": 0.09131403118040089,
+       "srrbert": 0.14742547425474253
+      }
+     }
+    },
+    {
+     "arm": "generator reranked",
+     "rule": "wilson90",
+     "metric_vindr_rex": 0.4074216303368109,
+     "metric_3sets": 0.4412868118989824,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.15384615384615385,
+       "srrbert": 0.10256410256410257
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.007052186177715091,
+       "srrbert": 0.00861933866165178
+      },
+      "rexgradient_val": {
+       "chexbert": 0.0556792873051225,
+       "srrbert": 0.08238482384823848
+      }
+     }
+    },
+    {
+     "arm": "generator reranked+constrained",
+     "rule": "wilson90",
+     "metric_vindr_rex": 0.43134212759438584,
+     "metric_3sets": 0.5117461327976804,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.19230769230769232,
+       "srrbert": 0.19230769230769232
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.011440213132737817,
+       "srrbert": 0.012223789374706159
+      },
+      "rexgradient_val": {
+       "chexbert": 0.0957683741648107,
+       "srrbert": 0.14796747967479676
+      }
+     }
+    },
+    {
+     "arm": "template",
+     "rule": "wilson90",
+     "metric_vindr_rex": 0.4238900300399803,
+     "metric_3sets": 0.5179424986333357,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.19230769230769232,
+       "srrbert": 0.19230769230769232
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.009873060648801129,
+       "srrbert": 0.011753643629525154
+      },
+      "rexgradient_val": {
+       "chexbert": 0.08685968819599109,
+       "srrbert": 0.14146341463414633
+      }
+     }
+    },
+    {
+     "arm": "generator plain",
+     "rule": "lso",
+     "metric_vindr_rex": 0.35641133084279925,
+     "metric_3sets": 0.3786416864224454,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.012820512820512822,
+       "srrbert": 0.012820512820512822
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.0037611659614480483,
+       "srrbert": 0.012380504623099827
+      },
+      "rexgradient_val": {
+       "chexbert": 0.022271714922049,
+       "srrbert": 0.04227642276422764
+      }
+     }
+    },
+    {
+     "arm": "generator constrained",
+     "rule": "lso",
+     "metric_vindr_rex": 0.4203206044771767,
+     "metric_3sets": 0.49549845300862483,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": false,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.11538461538461538,
+       "srrbert": 0.11538461538461538
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.01896254505563391,
+       "srrbert": 0.019746121297602257
+      },
+      "rexgradient_val": {
+       "chexbert": 0.10467706013363028,
+       "srrbert": 0.17018970189701896
+      }
+     }
+    },
+    {
+     "arm": "generator reranked",
+     "rule": "lso",
+     "metric_vindr_rex": 0.4126071221299919,
+     "metric_3sets": 0.4418793466133812,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.15384615384615385,
+       "srrbert": 0.10256410256410257
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.00830590816486444,
+       "srrbert": 0.009246199655226453
+      },
+      "rexgradient_val": {
+       "chexbert": 0.0690423162583519,
+       "srrbert": 0.0937669376693767
+      }
+     }
+    },
+    {
+     "arm": "generator reranked+constrained",
+     "rule": "lso",
+     "metric_vindr_rex": 0.42110236925939837,
+     "metric_3sets": 0.49616751513642376,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": false,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.16666666666666666,
+       "srrbert": 0.15384615384615385
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.020059551794389594,
+       "srrbert": 0.020059551794389594
+      },
+      "rexgradient_val": {
+       "chexbert": 0.11655530809205643,
+       "srrbert": 0.1772357723577236
+      }
+     }
+    },
+    {
+     "arm": "template",
+     "rule": "lso",
+     "metric_vindr_rex": 0.4114591493683429,
+     "metric_3sets": 0.5004719073817041,
+     "eligible_chexbert_cap": true,
+     "eligible_per_labeller_cap": true,
+     "fcr": {
+      "chexpert_val_dev": {
+       "chexbert": 0.11538461538461539,
+       "srrbert": 0.11538461538461539
+      },
+      "vindr_train_dev": {
+       "chexbert": 0.018805829807240243,
+       "srrbert": 0.019746121297602257
+      },
+      "rexgradient_val": {
+       "chexbert": 0.10022271714922049,
+       "srrbert": 0.16747967479674797
+      }
+     }
+    }
+   ]
+  },
+  "final_table": {
+   "exact_cap": "outputs/eval/sota_gen_20261104T0830Z/final_20261105b/final.json",
+   "rounded_cap": "outputs/eval/sota_gen_20261104T0830Z/final_20261105/final.json"
+  }
+ },
+ "gate": {
+  "rule": "per benchmark: headline 3-seed mean CheXbert macro on its dev set >= comparator + 0.05 AND SRR-BERT macro >= comparator (suite v2 lists); a failed gate makes that benchmark descriptive (Holm m stays 3)",
+  "values": {
+   "chexpert_test": {
+    "dev_set": "chexpert_val_dev",
+    "headline_chexbert_macro": 0.7322573310597124,
+    "headline_srrbert_macro": 0.6679413210173829,
+    "comparator": "llava_rad",
+    "comparator_chexbert_macro": 0.5532777158656645,
+    "comparator_srrbert_macro": 0.5632438568982833,
+    "passes": true
+   },
+   "vindr_test": {
+    "dev_set": "vindr_train_dev",
+    "headline_chexbert_macro": 0.4676585451527982,
+    "headline_srrbert_macro": 0.4630001598050186,
+    "comparator": "llava_rad",
+    "comparator_chexbert_macro": 0.35856406654977674,
+    "comparator_srrbert_macro": 0.397690614579895,
+    "passes": true
+   },
+   "mimic_test": {
+    "dev_set": "rexgradient_val",
+    "headline_chexbert_macro": 0.4223515556618717,
+    "headline_srrbert_macro": 0.4600733308371627,
+    "comparator": "llava_rad",
+    "comparator_chexbert_macro": 0.3102817740628369,
+    "comparator_srrbert_macro": 0.3744238386511482,
+    "passes": true
+   }
+  }
+ },
+ "headline": {
+  "swrd_arm": "SWRD_headline",
+  "comparator": {
+   "chexpert_test": "llava_rad",
+   "vindr_test": "llava_rad",
+   "mimic_test": "llava_rad"
+  },
+  "comparator_rule": "best non-flagged baseline on the benchmark's own dev split (MIMIC: better of MAIRA-2/LLaVA-Rad on ReXGradient val)",
+  "alpha_one_sided": 0.025,
+  "holm_m": 3,
+  "margin_chexbert": 0.03,
+  "fcr_margin": 0.03,
+  "claim": "win_b = Holm(m=3, one-sided 0.025) rejects p_b = max(p_CheXbert, p_SRR, p_FCR-NI under both labellers) AND point Delta_CheXbert >= +0.03; paired patient-cluster bootstrap of the seed-mean difference (B 2000, seed 20261028); NaN F1 = 0 (counted); missing prediction = empty report; everything else descriptive"
+ },
+ "reported_arms": {
+  "SWRD_plain": "tagged generator, greedy, Wilson-90 tags (3 seeds)",
+  "SWRD_reranked": "tagged generator + re-ranking (3 seeds)",
+  "SWRD_constrained": "tagged generator + constrained repair, no re-ranking (3 seeds)",
+  "SWRD_lso": "headline pipeline (re-ranked + constrained) with leave-site-out tags (configs_v5/e2e_raddino_merged_tta__lso__t22; 3 seeds)",
+  "template_wilson90": "classifier -> template v2.2.1 (Wilson-90 tags; deterministic, seed 0)",
+  "template_lso": "classifier -> template v2.2.1 (LSO tags; seed 0)",
+  "noVinDr_control": "classifier without VinDr labels (finetune_raddino_merged_novindr; configs_v4/e2e_raddino_merged_novindr_tta__site_vindrlso: site thresholds for CheXpert/MIMIC domains, leave-site-out for VinDr) -> template v2.1 (its declared sentences; no device heads)",
+  "v8_untagged": "9B R-all v8 without tags, greedy (3 seeds)",
+  "R_all_4B": "v14 student, selected checkpoints (3 seeds)",
+  "baselines": "maira2, chexagent, llava_rad, medgemma (frozen E3 harness)",
+  "not_an_arm": "lever E (CheXpert Plus): classifier ineligible under the dev FCR cap; tagged lever E generator not trained before the look; dev ablation only"
+ },
+ "arm_runs": {
+  "tagse2e": {
+   "v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s43": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s43/checkpoint-2000",
+   "v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s29": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s29/checkpoint-2000",
+   "v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s71": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s71/checkpoint-2000"
+  },
+  "v8_untagged": {
+   "v2_SOTA_9b_R_all_v8_2000u_s43": "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s43/checkpoint-2000",
+   "v2_SOTA_9b_R_all_v8_2000u_s71": "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s71/checkpoint-2000",
+   "v2_SOTA_9b_R_all_v8_2000u_s29": "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s29/checkpoint-2000"
+  },
+  "R_all_4B": {
+   "R_all_s29": "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s29/checkpoint-1800",
+   "R_all_s43": "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s43/checkpoint-2000",
+   "R_all_s71": "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s71/checkpoint-2000"
+  }
+ },
+ "overlap": "docs/reports/S11/20261104T2300_s11_protocol_v15_DRAFT_r3.md \u00a74 (symmetric rule; SWRD and MAIRA-2 in-domain on CheXpert and MIMIC; CheXagent, MedGemma flagged)",
+ "rerun_rules": "infrastructure failures only (crash, OOM, engine fault, missing file): whole arm x benchmark, identical config, job ids logged; no results-based rerun; post-look defects = errata with original numbers primary",
+ "pins": {
+  "git_commit_at_freeze": "b26acebc79ca43277de361ce0f6b32ef62800e74",
+  "git_note": "recorded, not enforced; code is pinned by sha256 (working tree had uncommitted files)",
+  "files": {
+   "src/swrd/sota/finding_classifier.py": "d4fccde93760a8ecfe6d5ce194a6d66a827516f80dee2d3213ab13c10609c3c1",
+   "src/swrd/sota/tags.py": "9655f70e4076b5ab08b4b63df8bea4b655e122b97c727905d83675f0e19e50e5",
+   "src/swrd/sota/test_template.py": "bcb5a813dc9e3580a62fd20430483347cfa78ce0c97298790a7417ccae80ab94",
+   "tools/v2_student_tag.py": "18055d13062ff76d0775f8621b504889a579761bae112c9d162ff5a1dd4e70ab",
+   "configs/sota/tag_block_1.yaml": "600383f9ac5a3cf10d49aae34e58af78bb56640246cb5f348cb1a1a6d50713a5",
+   "configs/sota/rerank_1.yaml": "11302d118ef57eb5007283b24cceea13d5fcf7b884df818154cfab9044d6c089",
+   "configs/sota/rule_matcher_1.yaml": "03e54213f7a87e63c1adaf4686c7c857a32a9331cb8a086aeac3738ad47ac285",
+   "src/swrd/eval/generate.py": "a6bd2af0f78cd6c48f49a9d12ccc94786d74b5409d491edadb55a60457f92be3",
+   "src/swrd/eval/generate_sample.py": "ba3312041462cb8bd75837993f8bf93ade6883558887172deb8382f5cbb693a0",
+   "src/swrd/eval/rerank.py": "4f5dc60da22bfb63230e881eff1d0cd9e6822f4771334c32aa8acc0ea3ced150",
+   "src/swrd/eval/rule_matcher.py": "4f02962b84902c67821043334261b3577769c2b4ce2e75c4e44c0335e623ae4d",
+   "src/swrd/eval/constrained.py": "c62bc56b2f41f52d477e4e83948559beccb81c9bd1d7e4314c637d6c2464d5d4",
+   "configs/template_sentences_v2_2_1.yaml": "5de38818b22c4cb6a905b3aed810b355acf1fed7f98e40a7916b330ac3fe58b1",
+   "configs/template_sentences_v2_2_1_device_suite.yaml": "c6a8e4d28f1c8b649db16aeb7413d7a500958f736b0bf4a65591ab4ef7c546d6",
+   "configs/template_sentences_v2_2.yaml": "834b1cf2a6e796913caa93d26f10216692a6dddc6b37d3b9840714f7d9e9200f",
+   "configs/template_sentences_v2_1.yaml": "eb9a8e234dc5f3c9c09d65dec8d511ee657cf665bdc47c83a1a35fe63eba043a",
+   "configs/pipeline_v1.yaml": "eef0fd02182e1d13ab7d6dbca365a4f0baf632cb334d61508456fab1a6d5228d",
+   "outputs/sota_cls/20261104T0830Z/configs_v5/e2e_raddino_merged_tta__site_wilson90__t22/config.json": "321c6f0f73011237820df438b31a825c9bc5d4ee27b140b654d3bdf9fc78d0a0",
+   "outputs/sota_cls/20261104T0830Z/configs_v5/e2e_raddino_merged_tta__lso__t22/config.json": "a3cf736f5dccb265cb061fe56343105d32c5cdfee70637c81d193af3f674fbd8",
+   "outputs/sota_cls/20261104T0830Z/configs_v5/e2e_raddino_merged_tta__site__t22/config.json": "1662b48944a52567d2d59df9a52d6c59dd6a790c4f1e0550b80fab6e7ac2ae89",
+   "outputs/sota_cls/20261104T0830Z/configs_v4/e2e_raddino_merged_novindr_tta__site_vindrlso/config.json": "dc9c8f0da2bda83f7d9b7a907070662fd40d1ffbcb11c3eddbdc61e693ff5392",
+   "outputs/sota_cls/20261104T0830Z/selection_rule.json": "502a9b8a796516012eda088b46ecb811de95b3192c7554dea3028fb4d59edcc7",
+   "outputs/sota_cls/20261104T0830Z/device_heads_e2e/run.json": "9be860dc690976be2e356eadc8b79bb36bdff2d05e0373706a83c7fb3f6fe311",
+   "src/swrd/eval/final_suite.py": "ad4b5113a62c9fd334509ee24e84f76091134179667cedbbbfd02571f426e21a",
+   "src/swrd/eval/dev_suite.py": "732654851336979bafe389028cae79f02dcaea780aad893ffacd376285d89a2d",
+   "tools/v15_guard.py": "55a2762678a3541bd62e0b56bb55fc670b4f59121760520dd42c0809b948c718",
+   "src/swrd/data/mimic_test.py": "33cf3a3461d1af0108ad3b47f3bd9cadf33f9ceb6786fc71779e016a266b549f",
+   "src/swrd/eval/external.py": "5ad832eed757e3a32827b83e74db5ee38d454de99f07d7afe6d2b181d2c271ca",
+   "src/swrd/eval/e1.py": "d83ac3f63bd26e9e9e29abf741d4ce6b1a07b066bf5d827c3e48e8d8bacb539a",
+   "src/swrd/eval/score.py": "655b1765be360af7e5967f7d66bbf7486bffa404e4fe9392e05e401642d51757",
+   "src/swrd/data/sft.py": "1a287395040022b5885ea18c5a62b209a3aa90b03a814d57aaa702473340b222",
+   "src/swrd/eval/baselines/generate.py": "160360c81007f72256aac6c0913661b1c1808356f52471245a787d6c314d43f0",
+   "src/swrd/eval/baselines/common.py": "efeea7a11a4f8d806419bb55f7471e24b4676ad7f1a4424acc900558ad2dce58",
+   "jobs/generate.sh": "764e76d7e178f00d92ea52c4f6318c8585daafa42c4008a95d06afa5a289ffc3",
+   "jobs/generate_merge.sh": "6613f2de9ac7a295a1b130e915c5a03273ebc2e45e6afdc311af182492b5af6b",
+   "jobs/generate_sample.sh": "4936fc74f0908a33a98398898e539e86748f156b0291d2b1f08600ac8070a58c",
+   "jobs/generate_sample_merge.sh": "b13cfbdaa6858f8781b09a8f7b25db1159e2528cc3631b8ae7b19aa09229daae",
+   "jobs/sota_rerank.sh": "f7784a38e20490ac005b68d94f9ee20302f5171e9e6b5a0c12bb3e41dd425f02",
+   "jobs/sota_constrained.sh": "0fd28e230951069f4c3987f9e5c43912be8cd85f8b764de334bb5284355dd180",
+   "jobs/sota_label_cpu.sh": "3f04dba5657a814ce26583897f522cec1f6cc501a5392a5ed72ebbc73ae40c6a",
+   "jobs/e3_baseline_generate.sh": "141538a580574391edf7c663d98b29a4a3188c36f553226c691b240f2c60fa14",
+   "jobs/v15_test_tags.sh": "bf871a640104b6bbd5108c6d03dc7044b83336065fe07fcc1e97d5c67b583b0e",
+   "docs/reports/S11/20261104T2024_sota_dev_suite_definition_v2.json": "90ae4d8698ecd912da898b758567e56a49361034e9dc8f75b6f4c4ce61c32367",
+   "docs/reports/S11/20261103T1148_sota_dev_suite_definition.json": "437779adb9abf72c36f65b08327065361f94f32f3527fac701a08b803ecf1c6e",
+   "docs/reports/S9/20261105T1139_sota_generator.md": "0e7df2032ee190c104da7e81587101095042ecdc294b6757680fa47c6c37ed08",
+   "docs/reports/S9/20261105T1139_sota_generator_stats.json": "fae40080583781d6751d089fdcbf1401b9f6b0633e519e37dea75342a960868c",
+   "outputs/eval/sota_gen_20261104T0830Z/final_20261105b/final.json": "46462bd6c677ecda77b20bad9d66f3f8851d8ce8a5a370bba9c4fa5c0b60fcb4",
+   "outputs/eval/sota_gen_20261104T0830Z/final_20261105/final.json": "5e22a7faf0cdcfaeaa17b6bbfdb4613f5bddee908eb646a4ec4faa13c285b02e",
+   "docs/reports/S9/20261104T2120_sota_generator_selection_rule_amendment4.json": "6f111108aa0cda40c73a9f580bf1fc40b1fc245f095de9d388ea37cbe64e5399",
+   "docs/reports/S9/20261104T0815_sota_generator_selection_rule.json": "4c790d71010a4939d501fbf06ce5d289f0bef6077edc36c7de44fc3b41a07277",
+   "docs/reports/S9/20261104T0850_sota_generator_selection_rule_amendment1.json": "05494ff89cbb9837ea5a31fcb081b588dfc52b2e9c0d6da918b48e95bad8e963",
+   "docs/reports/S9/20261104T1215_sota_generator_selection_rule_amendment2.json": "d57000cc4910c27efc0c53d0420ca94ec28f89631141efbd09988d97f25036eb",
+   "docs/reports/S9/20261104T1330_sota_generator_selection_rule_amendment3.json": "f33446f945dbe223b08194c9fa6da9eddd26bc3cd3cc00c219f04267047aeaa3",
+   "docs/reports/S2/20261104T1136_sota_classifier_v2_final.md": "5cb5bb574c41ada6185bd80363552b19164d6abc959e2a487e837473acb7fac7",
+   "docs/reports/S2/20261104T2210_sota_device_heads.md": "74fe1edbddcfe8732fee16e4be514ef0104ac279c3c4c463411121a169607b09",
+   "data/sft/v2_production_R_all_v8_tagse2e_status_prob_20261104T1330Z/manifest.json": "8f9db3e1350036d4db1451c04e5c5ba8f8b877339ea6bf29de73b106533cf04d",
+   "tests/test_final_suite.py": "7521d2584510fd7c494802705108d58864890e05168c8ca825a22dc52c1eb41e",
+   "tests/test_v15_guard.py": "5e7004c763219c18d5606da5ba6d7ae23fc3deff9a240fd64961830110df7401",
+   "tests/test_test_template.py": "beeb4a905e919ae1cb516d17f43ebe79d483c5a7c5e6c7176e8713a03e7293bf",
+   "tests/test_dev_suite.py": "a9b4503690f75619e4ba97ba611edcd919595448605bea6209fcf492b3fdd442",
+   "tests/test_mimic_test.py": "62cf9b52eabded1218326ff3bb37dd78e704232d9e6e3435681ff9cc108175f4",
+   "docs/reports/S11/20261104T2300_s11_protocol_v15_DRAFT_r3.md": "a06e8f2f656d8250cea70715f67d6f8de792f1bcce13aa719f8e24ed08b4bccc",
+   "docs/reports/consult/20261104T1921Z_v15_draft_audit.md": "05220654a57091808d82caeb51749ba6aec92583354d8e2e6ffac0dc8711253b",
+   "docs/reports/S11/20261104T2028_s11_protocol_v15_benchmarks_DRAFT.json": "deff59375ef900ed32729b0a32b1322727f2c7b287bedea8002fbfcaef244a0e"
+  },
+  "dirs": {
+   "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s43/checkpoint-2000": "aff1cd8a9d8b7222c3cca082fdbbc90665ff1654a27be290ad537c8a240cb22c",
+   "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s43/checkpoint-2000": "c0d5f4c22cf218d1658aa20e51a505e990a67eb8241457fab5226f98766bb652",
+   "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s71/checkpoint-2000": "9167564e2562cadf3303f4e4889668b6d274a584b2eaf1bc9f6cdafa2ac62dd9",
+   "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s29/checkpoint-2000": "bc27261e51eff8b9e5065d9e1dcdebba83ea51f2ca8a622f2f157522493be16a",
+   "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s29/checkpoint-2000": "0e6121502c268a8cd419009cf1650fb41bc2c1a0ed769fb896033e5780d2add6",
+   "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s71/checkpoint-2000": "2e5ef8ffb89c6663af751b4c46c2df20068198b7548ae4dd3ea72f123d0c6fa7",
+   "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s29/checkpoint-1800": "3de4277d7e90bdbb9b758fa0f02bc7e14a28aa14099b96655f82139d9c4b8e00",
+   "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s43/checkpoint-2000": "bd1a9fecb6b5619d802f31455b2235d418125ba7d252d0fd51766f3803ccc4e7",
+   "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s71/checkpoint-2000": "e2cbb792dd7b906ce152da908b8459f93164286083403db3703301f5826c1bdb",
+   "outputs/sota_cls/20261104T0830Z/finetune_raddino_merged": "8fd3f37994a057c18b8fde15de492a0e4b94c721a13ef0cb4fccc53a549a909e",
+   "outputs/sota_cls/20261104T0830Z/finetune_raddino_merged_novindr": "8c75673d8eb24b52bc195fd5803c70d473e5f1066d2f10f004160ad12c5464d8",
+   "outputs/sota_cls/20261104T0830Z/e2e_raddino_merged_tta": "7151f46f5b7aab65749811ce8d720b507b106a4bab13f36f685b1f3ed1d7e463",
+   "outputs/sota_cls/20261104T0830Z/e2e_raddino_merged_novindr_tta": "f3d2d203226aaf74387193e35bd24a1b0c74147fe0a45816deed7d187fe474d5",
+   "outputs/sota_cls/20261104T0830Z/device_heads_e2e": "6f8398a3df752063f668ffe3e1e547e866e34095b860f0c6eaeb1002288a9358",
+   "third_party/e3_baselines": "d1545a2e61bf67dae247375fda2d04e054cb42d0c16fe10635a2ecd10f55213b",
+   "third_party/mimic_cxr_section_parser": "1deee7edc92b839e955717358bec61d2326888c6dbff0abcdd82b24f1ea6c0d6"
+  },
+  "test_inputs": {
+   "data/external/chexpert_test/sft.jsonl": "3becaf64a9da69829adf0e935b29190471774292b6c98f3c1518e67f664ca15d",
+   "data/external/vindr_test_s0rebuild_20261028T170354Z/sft.jsonl": "517825cf80f0cfe514f01e32158323fc785cac30179199e89e95cbba62af38e6",
+   "data/external/mimic_cxr_test_20261104T2009Z/sft.jsonl": "5d18e454bd9a07735851070348b75d0d103bd414b3631821f055d53c78bdc91d",
+   "data/external/chexpert_test/ref.parquet": "a978b40748a364aeac39c6000f7c066e58c4ca9368baa000ffaf1038ad0d873b",
+   "data/external/vindr_test_s0rebuild_20261028T170354Z/ref.parquet": "b9434c4cc4b9b4174425182f474113d7da98e3d1d505b90633d3303d80ff370a",
+   "data/external/mimic_cxr_test_20261104T2009Z/ref.parquet": "501d6b2b200b4ea70080a62593c2da200c1a52f2099c57522ac7e03f4587b99d",
+   "data/external/mimic_cxr_test_20261104T2009Z/patients.parquet": "409d1b938da2593dccbbcd4e0fb200970165486f1ee60b4090fe784f57c97ac8",
+   "data/external/mimic_cxr_test_20261104T2009Z/reference/preds.jsonl": "5bd386d69dcac49b2560c0d60ca6074efe2cdd8d503313f7d2cbdd88e6e2c799",
+   "data/external/mimic_cxr_test_20261104T2009Z/build_manifest.json": "0f7ed2b809c66ddbe702469bffc0b722ac4b471f7bece16f6436950a35e2be46",
+   "data/external/mimic_cxr_test_20261104T2009Z/reference/scores/chexbert_labels.parquet": "768ce084a4d37a45b50c8c8667e306d104fa0f6c3165ad7f34397fc5506aceaf",
+   "data/external/mimic_cxr_test_20261104T2009Z/reference/scores/chexbert_raw4_labels.parquet": "fe9fb117764a30f96c6553104d56bfc9a5df3210829a3a5ea13e887f5b185298",
+   "data/external/mimic_cxr_test_20261104T2009Z/reference/scores/srrbert_labels.parquet": "02efb8e2d04b6f49b7eda3138c316106e52c15af86a28a738da88b58707555ad"
+  },
+  "roles": {
+   "cls_tags": {
+    "files": [
+     "src/swrd/sota/finding_classifier.py",
+     "jobs/v15_test_tags.sh",
+     "outputs/sota_cls/20261104T0830Z/configs_v5/e2e_raddino_merged_tta__site_wilson90__t22/config.json",
+     "outputs/sota_cls/20261104T0830Z/configs_v5/e2e_raddino_merged_tta__lso__t22/config.json",
+     "outputs/sota_cls/20261104T0830Z/configs_v5/e2e_raddino_merged_tta__site__t22/config.json",
+     "outputs/sota_cls/20261104T0830Z/configs_v4/e2e_raddino_merged_novindr_tta__site_vindrlso/config.json",
+     "outputs/sota_cls/20261104T0830Z/device_heads_e2e/run.json"
+    ],
+    "dirs": [
+     "outputs/sota_cls/20261104T0830Z/finetune_raddino_merged",
+     "outputs/sota_cls/20261104T0830Z/finetune_raddino_merged_novindr",
+     "outputs/sota_cls/20261104T0830Z/device_heads_e2e"
+    ]
+   },
+   "tag_inputs": {
+    "files": [
+     "src/swrd/sota/test_template.py",
+     "src/swrd/sota/tags.py",
+     "configs/sota/tag_block_1.yaml"
+    ],
+    "dirs": []
+   },
+   "generate": {
+    "files": [
+     "src/swrd/eval/generate.py",
+     "jobs/generate.sh",
+     "jobs/generate_merge.sh",
+     "configs/pipeline_v1.yaml"
+    ],
+    "dirs": [
+     "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s29/checkpoint-1800",
+     "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s43/checkpoint-2000",
+     "outputs/runs/v2_HL7_R_all_v7_2000u_qwen35_4b_s71/checkpoint-2000",
+     "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s29/checkpoint-2000",
+     "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s43/checkpoint-2000",
+     "outputs/runs/v2_SOTA_9b_R_all_v8_2000u_s71/checkpoint-2000",
+     "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s29/checkpoint-2000",
+     "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s43/checkpoint-2000",
+     "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s71/checkpoint-2000"
+    ]
+   },
+   "sample_rerank": {
+    "files": [
+     "src/swrd/eval/generate_sample.py",
+     "src/swrd/eval/rerank.py",
+     "src/swrd/eval/rule_matcher.py",
+     "configs/sota/rerank_1.yaml",
+     "configs/sota/rule_matcher_1.yaml",
+     "jobs/generate_sample.sh",
+     "jobs/generate_sample_merge.sh",
+     "jobs/sota_rerank.sh"
+    ],
+    "dirs": [
+     "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s29/checkpoint-2000",
+     "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s43/checkpoint-2000",
+     "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s71/checkpoint-2000"
+    ]
+   },
+   "constrained": {
+    "files": [
+     "src/swrd/eval/constrained.py",
+     "jobs/sota_constrained.sh",
+     "configs/template_sentences_v2_2_1.yaml",
+     "configs/template_sentences_v2_2_1_device_suite.yaml",
+     "outputs/sota_cls/20261104T0830Z/device_heads_e2e/run.json"
+    ],
+    "dirs": [
+     "outputs/sota_cls/20261104T0830Z/device_heads_e2e"
+    ]
+   },
+   "template": {
+    "files": [
+     "src/swrd/sota/test_template.py",
+     "src/swrd/sota/finding_classifier.py",
+     "configs/template_sentences_v2_2_1.yaml",
+     "configs/template_sentences_v2_1.yaml"
+    ],
+    "dirs": []
+   },
+   "e3": {
+    "files": [
+     "src/swrd/eval/baselines/generate.py",
+     "src/swrd/eval/baselines/common.py",
+     "jobs/e3_baseline_generate.sh"
+    ],
+    "dirs": [
+     "third_party/e3_baselines"
+    ]
+   },
+   "label": {
+    "files": [
+     "src/swrd/eval/external.py",
+     "src/swrd/eval/e1.py",
+     "src/swrd/eval/score.py",
+     "src/swrd/eval/dev_suite.py",
+     "src/swrd/data/sft.py",
+     "jobs/sota_label_cpu.sh"
+    ],
+    "dirs": []
+   },
+   "score": {
+    "files": [
+     "src/swrd/eval/final_suite.py",
+     "src/swrd/eval/dev_suite.py",
+     "src/swrd/eval/external.py",
+     "src/swrd/eval/score.py"
+    ],
+    "dirs": []
+   }
+  },
+  "reused_generations": {
+   "chexpert_test": {
+    "maira2": {
+     "0": "9b0b13131285d6f3b4b9f2caff23c0dec2ace2a6aaa786050b15bf89a39a12dd"
+    },
+    "chexagent": {
+     "0": "27a454bc1acff43f33c6a043b7224f3468efcd36dec7f11c594b883d75a9fa9e"
+    },
+    "llava_rad": {
+     "0": "148a8178ebe99f157479acd3d0a0789449119aae3176571b16f1011c53a34ab0"
+    },
+    "medgemma": {
+     "0": "4fc758d7a4d6749910984293fd4b3f5751f3cdeb6891987edb3b24a009431f0a"
+    },
+    "R_all_4B": {
+     "29": "49a655ac3bf06e4fd477fd381ed63c730b3db48d37a33ff5034f08e8af131a53",
+     "43": "cf9a02b0910e9f33157899e4f6e23eb3b13259f4508dd60ff968aab145232e13",
+     "71": "157c56e3708c9ba5893a3be4b02c85fc13d5756897722bbc012b9c12f287b864"
+    }
+   },
+   "vindr_test": {
+    "maira2": {
+     "0": "f73dcfccbf600bc1133a71627380592069a8aca1418f591445989c40f797f1c9"
+    },
+    "chexagent": {
+     "0": "c96b89d27e8bae54c70b3dc254e362378b2daf3361bd6670712146b10b3a82e5"
+    },
+    "llava_rad": {
+     "0": "f9195867797bd258c64039dd4222c3727b0aed98e0954acd60f5a5079b8d67f1"
+    },
+    "medgemma": {
+     "0": "0776bc40966d36ba4ddaf0f198c75e09239fe7683975a2ca7f452ca1b8751bd7"
+    },
+    "R_all_4B": {
+     "29": "6e27fc00259928882454e346af18d977fba010a8fb7c76b27ff6ea3d3513b042",
+     "43": "758ae9f842e882d6accef6c2e2033844ee75fb07e904051777bda4336de56822",
+     "71": "408a30b5e209d421c86e669093bb0cc9577a4a85048cd7de803fefa23c33cdc2"
+    }
+   }
+  },
+  "reused_generation_paths": {
+   "chexpert_test": {
+    "maira2": {
+     "0": "outputs/eval/s11_pipeline_v1_rule5/e3/maira2/gen_chexpert_test"
+    },
+    "chexagent": {
+     "0": "outputs/eval/s11_pipeline_v1_rule5/e3/chexagent/gen_chexpert_test"
+    },
+    "llava_rad": {
+     "0": "outputs/eval/s11_pipeline_v1_rule5/e3/llava_rad/gen_chexpert_test"
+    },
+    "medgemma": {
+     "0": "outputs/eval/s11_pipeline_v1_rule5/e3/medgemma/gen_chexpert_test"
+    },
+    "R_all_4B": {
+     "29": "outputs/eval/s11_pipeline_v1_rule5/R_all_s29/gen_chexpert_test_selected",
+     "43": "outputs/eval/s11_pipeline_v1_rule5/R_all_s43/gen_chexpert_test_selected",
+     "71": "outputs/eval/s11_pipeline_v1_rule5/R_all_s71/gen_chexpert_test_selected"
+    }
+   },
+   "vindr_test": {
+    "maira2": {
+     "0": "outputs/eval/s11_pipeline_v1_rule5/e3/maira2/gen_vindr"
+    },
+    "chexagent": {
+     "0": "outputs/eval/s11_pipeline_v1_rule5/e3/chexagent/gen_vindr"
+    },
+    "llava_rad": {
+     "0": "outputs/eval/s11_pipeline_v1_rule5/e3/llava_rad/gen_vindr"
+    },
+    "medgemma": {
+     "0": "outputs/eval/s11_pipeline_v1_rule5/e3/medgemma/gen_vindr"
+    },
+    "R_all_4B": {
+     "29": "outputs/eval/s11_pipeline_v1_rule5/R_all_s29/gen_vindr_selected",
+     "43": "outputs/eval/s11_pipeline_v1_rule5/R_all_s43/gen_vindr_selected",
+     "71": "outputs/eval/s11_pipeline_v1_rule5/R_all_s71/gen_vindr_selected"
+    }
+   }
+  },
+  "generation_record": "written once after all test generation and before any scoring: {v15_sha256, generations{benchmark{arm{seed: preds.jsonl sha256}}}}; its sha256 is logged in channel/95_work_log.md before scoring"
+ },
+ "disclosures": "docs/reports/S11/20261105T1150_s11_external_eval_protocol_v15.md \u00a7Disclosures"
+}

@@ -1,0 +1,2112 @@
+{
+ "schema": "swrd.s11.external_eval_protocol/1",
+ "created_utc": "2026-11-01T17:45:08Z",
+ "author": "worker-EV",
+ "status": "frozen before any headline model exists; changes require a new protocol version written before headline predictions exist",
+ "revision_history": [
+  "v1 20261030T0758 (df02938c): initial",
+  "v2 20261030T0815 (8c4ceb3a): sealed test mode replaced by check-format",
+  "v3 20261030T0823 (350df101): normal false-claim rate excludes labels the normal class admits",
+  "v4 20261030T1045 (05ebc7d5): mention rate, specificity / FPR, report length, grounding reading",
+  "v5: grounding reading revised (recall non-inferiority, delta 0.02; FPR-route block when mention rate and recall fall; per-finding readings need >= 30 reference positives and negatives). Fixed after a DEVELOPMENT-ONLY pipeline check (CheXpert val dev set) exposed that v4 read a finding as improved while recall fell in every seed; before any headline model existed and before any test-set metric was computed",
+  "v6: headline re-scoped to image-grounded report label completion; primary endpoint = per-finding recall/F1 on completed heads with >= 30 test positives; non-target recall non-inferiority guard; macro-F1 secondary with Holm; selected and final checkpoints co-primary; completion arms / contrasts / budgets. Fixed BEFORE any headline training result existed and before any test-set metric was computed",
+  "v7: headline statement restricted to primary endpoints still 'supported' after Holm across the whole primary family (both benchmarks, both checkpoints jointly via intersection-union p); field headline_eligible. Coordinator decision replacing v6's unadjusted per-endpoint headline. Fixed BEFORE any headline result",
+  "v8 (worker-EV8; channel/04 Claude decision 2026-10-31 16:33 item 1, after the independent draft review docs/reports/S12/20261031T1631_paper_draft_v0_review.md M1/M3/M7/M8): (a) view-stratified reading declared in advance: primary endpoints read pooled (verdict) AND per recorded view (reported, not a headline family); view source frozen per set; (b) F1 route also needs target FPR non-inferiority 0.02; (c) endpoints = completion rule-5 heads (effusion, airspace opacity, edema, infiltrate, consolidation) with >= 30 test positives; cardiomegaly / pneumothorax not endpoints; (d) arm R-all+test-time-completion (test-time-completion-1) and its contrasts; random-addition control view-matched. Fixed BEFORE any completion arm trained and before any test-set metric was computed",
+  "v9 (worker-EV8; coordinator decisions on the independent v8 audit, 2026-10-31): (1) --targets bound to the frozen R-all+complete manifest on test sets (endpoints, Holm family and non-target guard derive from it; identical across checkpoints and benchmarks; dev sets may declare targets); (2) test-time silence = the training silence logic (completion_arms.silence on the Stage 1 infer_spans matcher's mentions + the coverage rule) instead of an alias regex; (3) the test-time arm's dependencies hashed and checked; (4) apply checks the manifest's arm name, build and file hashes and binds --gen to the R-all run, seed and checkpoint; (5) empty generations are never completed (failed inference); internal-contrast needs --final for final_evaluation; v8 apply bug fixed (it read build keys from the completion section, where the builder does not store them, so it would have refused every real manifest). Fixed BEFORE any completion arm trained and before any test-set metric was computed",
+  "v10 (worker-EV8; coordinator decisions 2026-10-31): (1) endpoint set derived ENTIRELY from the final R-all+complete manifest's qualified heads among completion-capable non-diagnosis heads with >= 30 test positives (hand-written COMPLETION_HEADS / NOT_ENDPOINT_HEADS removed; cardiomegaly is an endpoint iff it is in the final build); per-view dose and uncompleted benchmark views reported next to each endpoint; (2) test-set target resolution and the --final gate run BEFORE any reference file is read; (3) dependency hashes updated to the final code; (4) the final R-all+complete build is PINNED (path, sha256, exact rule) and every analysis refuses another manifest; (5) a benchmark with no completed-head endpoint gets an explicit note and its readings are secondary / descriptive only (coordinator decision channel/04 18:2x: no new endpoints, head set not revisited). Fixed BEFORE any completion arm trained and before any test-set metric was computed",
+  "v11 (worker-EV8; coordinator decision on the independent head-set audit, finding 5, channel/04 ~18:40): v10 plus exactly (a) a label-free mechanism check (mention rate and positive-claim rate of the completed heads' labels per arm on both test sets; descriptive), (b) a harm guard (completed-head labels with 0 test positives, i.e. VinDr Edema: FPR = false-claim rate, R-all+complete FPR non-inferior to R-all+random-additions with the existing FPR_NONINFERIORITY_DELTA at both co-primary checkpoints), (c) the pre-declared caveat on the CheXpert test Edema primary (no view in the prompts, PA-only completion, a null is the expected reading). Fixed BEFORE any completion arm trained and before any test-set metric was computed",
+  "v12 (worker-EV8; coordinator, 2026-10-31): v11 plus only the reconciliation of two leftover fields (head-set audit finding 5d): statistics.primary_endpoint states the derived per-finding primary (CheXpert test Edema, Holm family size 1) and that macro-F1 on either set is secondary / descriptive; sets.vindr.role 'primary' -> 'secondary' (with the v10 no-endpoint note). Code paths only test role == 'development' or role in (primary, secondary), so behaviour is unchanged (tests). Fixed BEFORE any completion arm trained and before any test-set metric was computed",
+  "v13 (worker-EV8; coordinator decisions on the independent full-scale plan review, channel/04 ~11:20): v12 plus (1) E2 gate ablation as its OWN pre-specified Holm family (audit-free U vs its row-level head-set matched control R_U; members = VinDr false-claim rate of every audit-free head's label, CheXpert test recall and FPR of labels with >= 30 positives; selected checkpoint; final checkpoint = consistency check), written predictions, planning MDEs, view caveats, pins of U, R_U and the marginal control (descriptive only); (2) descriptive items with CIs and no significance language: E3 external baselines (overlap table, no ranking across an overlap flag), E5 (student_validation only), E6 and the test-time audit-free arm, a report-quality guard; (3) the late-arm scoring rule. v12 family 1 (CheXpert test Edema, Holm size 1) untouched. Fixed BEFORE any E1 / E2 validation number and any test-set metric existed",
+  "v14 (worker-EV8; channel/04 2026-11-01 ~12:40-~17:30): every v13 pin superseded. Pins bases v7 (cxr-study-5 rule), the audit-free-2 build U and its row-level matched control R_U (+ G subset U assertion), the rule-5.3 qualification result. Family 1 derived mechanically from rule 5.3 = EMPTY (per head/view reasons; nothing enters Holm family 1; headline refuses). The E2 family keeps the v13 definition, re-derived from the new build with a mechanical per-member view status, and is the confirmatory family. Descriptive: R-seed v7 / R-all v7 references, E3 (overlap table + normaliser / generation settings pinned), the test-time audit-free arm (the rule-5.1 test-time arm dropped), mechanism check, report-quality guard; the marginal control and E5 dropped from test scoring. Fixed BEFORE any validation number of the v7 runs and any test-set metric existed"
+ ],
+ "decision_basis": "channel/04_consult_proposal_alignment.md (2026-10-30 07:20 Codex freeze + Resolution; 2026-10-31 16:33 Claude decision item 1 for v8; coordinator decisions on the v8 audit for v9)",
+ "code_sha256": {
+  "src/swrd/eval/external.py": "5ad832eed757e3a32827b83e74db5ee38d454de99f07d7afe6d2b181d2c271ca",
+  "src/swrd/eval/e1.py": "d83ac3f63bd26e9e9e29abf741d4ce6b1a07b066bf5d827c3e48e8d8bacb539a",
+  "src/swrd/eval/score.py": "655b1765be360af7e5967f7d66bbf7486bffa404e4fe9392e05e401642d51757",
+  "src/swrd/data/sft.py": "1a287395040022b5885ea18c5a62b209a3aa90b03a814d57aaa702473340b222",
+  "src/swrd/eval/test_time_completion.py": "175bdf171c4d72f86d849cf2bcd0d6b83bd10d49c85623ae325e77c05a497b1d"
+ },
+ "final_completion_build": null,
+ "family_1_v14": {
+  "path": "docs/reports/S9/20261101T1647_s9_rule53_result_v7_stats.json",
+  "sha256": "ca3b5852380283f9b7c1b74f9e82b646edbe3ac415efcf2bdf4f0c47a542d970",
+  "record_manifest": {
+   "path": "data/sft/v2_completion_rule53B_qualification_v7_20261101T1646Z/R_all_complete/manifest.json",
+   "sha256": "7db1af1d7b02c18c7302860b612fa4553f427083e515ebc92ffc8a502035f9a4"
+  },
+  "specificity": {
+   "path": "docs/reports/S9/20261101T1633_s9_completion_specificity_rule52_v7.json",
+   "sha256": "13db84c1f92b27845ebdbd04bab33b0fa37118fceff531b243311def0069c2c5"
+  },
+  "rule": "completion-rule-5.3",
+  "targets": [],
+  "qualified_head_views": [],
+  "noise_qualified_head_views": [
+   "consolidation@PA",
+   "infiltrate@PA"
+  ],
+  "per_head_view_reason": {
+   "cardiomegaly@AP": "fails the one-shot S7 audit",
+   "cardiomegaly@PA": "fails the one-shot S7 audit",
+   "pleural_effusion@AP": "fails the one-shot S7 audit",
+   "pleural_effusion@PA": "fails the rule-5.3 noise share (1.115: naive 0.453, corrected 1.115)",
+   "airspace_opacity@AP": "no tuned per-view positive point on every fold",
+   "airspace_opacity@PA": "no tuned per-view positive point on every fold",
+   "edema@AP": "fails the one-shot S7 audit",
+   "edema@PA": "fails the rule-5.3 noise share (0.829: naive 0.256, corrected 0.829)",
+   "infiltrate@AP": "fails the one-shot S7 audit",
+   "infiltrate@PA": "fails the pre-registered specificity criterion (own - effusion 0.177 CI [-0.006, 0.391], n = 13)",
+   "consolidation@AP": "fails the one-shot S7 audit",
+   "consolidation@PA": "fails the pre-registered specificity criterion (own - effusion -0.004 CI [-0.093, 0.077], n = 21)",
+   "pneumothorax@AP": "fails the one-shot S7 audit",
+   "pneumothorax@PA": "fails the one-shot S7 audit"
+  },
+  "dose_by_head_view": {},
+  "empty": true,
+  "statement": "family 1 is EMPTY: no head/view passes every gate of completion-rule-5.3 (one-shot S7 audit, subset-consistent noise share, pre-registered specificity criterion) at this scale; nothing enters Holm family 1. This is a result of the paper"
+ },
+ "bases_v14": {
+  "eligibility_rule": {
+   "path": "outputs/registry/s0_eligibility_cxr_study_5_20261101T162632Z.jsonl",
+   "sha256": "ea84e0c140f2fbf7fb8f2c923cc329c6500f55bf4c381de9c5029fc87714baa3"
+  },
+  "R-all": {
+   "dir": "data/sft/v2_production_R_all_v7_20261101T1626Z",
+   "manifest_sha256": "771671ee0b4ce2d8c388c23abc43b365d6b9c344c1e2d91ad2b459f7a0c5649f",
+   "rule_version": "cxr-study-5",
+   "train_sha256": "da841fdb150d39716fa6aafece9f272a2c264d276d1cbf6433b373f0ba93036f"
+  },
+  "R-seed": {
+   "dir": "data/sft/v2_production_R_seed_v7_20261101T1626Z",
+   "manifest_sha256": "bc9b353f60cbbebe31029c132dee01e464dba9f2d5b09204e74736d6ddee2c52",
+   "rule_version": "cxr-study-5",
+   "train_sha256": "29976716b4a3e70fa302a357d1aa0fbe7aa0e6dfe0b24e31f29596c23f9173fb"
+  }
+ },
+ "e2_v14": {
+  "name": "E2 gate ablation (audit-free completion)",
+  "definition": "audit-free completion U = rule 5.1 steps 1-3 unchanged (adult frontal v3 base, presence-2 silence with coverage-4, out-of-fold / fresh score >= the tuning point t_h(fold, view) of the pinned bundle), the audit / qualification / noise-share / specificity steps removed except 'not a diagnosis'; a head/view enters iff its tuned positive point is ok on every fold key of that view (support kept, so 'audit-free', not 'ungated'); fold@view keys without a tuned point get no additions and the control follows the same counts; AP and PA only. Never read against gated E1; only against its own matched control",
+  "builds": {
+   "audit_free": {
+    "path": "data/sft/v2_completion_E2_auditfree2_v7_20261101T1633Z/R_all_complete_auditfree2/manifest.json",
+    "sha256": "804fd79e02b1c5d920e45138a1ffa0ca369de1c6bb79fc3e8a7b10b43d44f38f",
+    "arm": "R-all+complete-auditfree2",
+    "rule": "completion-ablation-auditfree-2",
+    "targets": [
+     "cardiomegaly",
+     "consolidation",
+     "edema",
+     "infiltrate",
+     "pleural_effusion",
+     "pneumothorax"
+    ],
+    "qualified_head_views": [
+     "cardiomegaly@AP",
+     "cardiomegaly@PA",
+     "consolidation@AP",
+     "consolidation@PA",
+     "edema@AP",
+     "edema@PA",
+     "infiltrate@AP",
+     "infiltrate@PA",
+     "pleural_effusion@AP",
+     "pleural_effusion@PA",
+     "pneumothorax@AP",
+     "pneumothorax@PA"
+    ],
+    "dose_by_head_view": {
+     "pleural_effusion": {
+      "AP": 1966,
+      "PA": 231
+     },
+     "edema": {
+      "AP": 1371,
+      "PA": 238
+     },
+     "pneumothorax": {
+      "AP": 660,
+      "PA": 456
+     },
+     "cardiomegaly": {
+      "AP": 659,
+      "PA": 86
+     },
+     "infiltrate": {
+      "AP": 127,
+      "PA": 13
+     },
+     "consolidation": {
+      "AP": 144,
+      "PA": 21
+     }
+    },
+    "rows_changed": 4859,
+    "additions": 5972,
+    "counts_source": "additions.jsonl (checked against the manifest and the build dose table)",
+    "heads_per_changed_row": {
+     "2": 744,
+     "1": 3944,
+     "4": 25,
+     "3": 145,
+     "5": 1
+    },
+    "files_sha256": {
+     "train.jsonl": "29b9f2cbdf0d8685a9ee3ddd4813b1ee772bc20a86db7058c8d7bc63dbecae0a",
+     "validation.jsonl": "605dc07d428956bfe7c332c1e4795fe1124227fc1bc9507241fe2bc2513f9bdd",
+     "train_manifest.jsonl": "53253935a8ec1e3fbcc01751737d93fc139676f534af8f039b391162b671ca9b",
+     "validation_manifest.jsonl": "2bb0a4f01a2f3ba699b0ce89fffcbb9f1e98353357f6520eae69a409b9ebb934",
+     "additions.jsonl": "ec904c75ca04e8439cb0e508bd1011e2e4d94bddd9fe2ef7e5f70373ac84c886",
+     "pool.jsonl": "7e1c18bfc0a8220e81a5537761815bcd0d6b90728d09a3314691a5c597318aac"
+    },
+    "derived_from": "data/sft/v2_production_R_all_v7_20261101T1626Z",
+    "tuning_bundle": {
+     "path": "outputs/runs/s7_endpoints_tuning_refreeze_norm_20261031T1654Z/endpoints_tuning.json",
+     "sha256": "b305a713258d0eae666c82bc796f7b7c6629b1e92c6de9dcece995b9321e446a",
+     "phase": "tuning",
+     "fold_key_rule": "fold model k's own positive point for a fold-k probability; 'mean' unused"
+    },
+    "training_budget": {
+     "max_steps": 2000,
+     "rule": "equal exposure: R-all arms 2,000 updates, R-seed arms 1,000 (channel/04 13:18)"
+    }
+   },
+   "control_rowset": {
+    "path": "data/sft/v2_completion_E2_auditfree2_v7_20261101T1633Z/R_all_random_rowset_auditfree2/manifest.json",
+    "sha256": "2aa868c870d8f9010a444bd1830bc43b1ce45c37cb33a5a62df3d6be78f610c9",
+    "arm": "R-all+random-rowset-auditfree2",
+    "rule": "random-rowset-1",
+    "match": "rowset",
+    "counts_from_additions_jsonl": {
+     "dose_by_head_view": {
+      "cardiomegaly": {
+       "AP": 659,
+       "PA": 86
+      },
+      "pleural_effusion": {
+       "AP": 1966,
+       "PA": 231
+      },
+      "edema": {
+       "AP": 1371,
+       "PA": 238
+      },
+      "infiltrate": {
+       "AP": 127,
+       "PA": 13
+      },
+      "consolidation": {
+       "AP": 144,
+       "PA": 21
+      },
+      "pneumothorax": {
+       "AP": 660,
+       "PA": 456
+      }
+     },
+     "additions": 5972,
+     "rows_changed": 4859
+    },
+    "parent_arm": {
+     "dir": "data/sft/v2_completion_E2_auditfree2_v7_20261101T1633Z/R_all_complete_auditfree2",
+     "manifest_sha256": "804fd79e02b1c5d920e45138a1ffa0ca369de1c6bb79fc3e8a7b10b43d44f38f"
+    },
+    "rows_changed": 4859,
+    "overlap_rows_with_completion": 1440,
+    "files_sha256": {
+     "train.jsonl": "1cfae4301b58d4633648fdb91834b73c460c88b9e201fbb8bf59bdd71d6828ee",
+     "validation.jsonl": "605dc07d428956bfe7c332c1e4795fe1124227fc1bc9507241fe2bc2513f9bdd",
+     "train_manifest.jsonl": "cf86729216e7dcbf65b6eff6ee20df3354dc94909bced447fdcbc4390e352d71",
+     "validation_manifest.jsonl": "2bb0a4f01a2f3ba699b0ce89fffcbb9f1e98353357f6520eae69a409b9ebb934",
+     "additions.jsonl": "1c93234435165eb88ac6f2a0b806777c8080895643adcd98c2d181006ab3357d"
+    }
+   },
+   "control_marginal": null,
+   "dose_table": {
+    "path": "data/sft/v2_completion_E2_auditfree2_v7_20261101T1633Z/dose_by_head_view.json",
+    "sha256": "7c618417c4c6401657de04f82e22489a56867be1b305bf3b0f82a02387fdb0d2"
+   },
+   "gated_subset_assertion": {
+    "path": "data/sft/v2_completion_E2_auditfree2_v7_20261101T1633Z/assert_gated_subset.json",
+    "sha256": "4c034502a30d570cc65b226d19b44bdd803efcfb3355a97b9be17a98a7eea3d6",
+    "gated_build": {
+     "dir": "data/sft/v2_completion_final_rule52_v7_20261101T1633Z/R_all_complete",
+     "manifest_sha256": "b0b1f7cc6a212a0129de56eed1a5f524a0e395ed1bd7060342bc1aef6b147cc0",
+     "additions": 231
+    },
+    "gated_additions": 231,
+    "audit_free_additions": 5972,
+    "subset": true,
+    "note": "the gated build named here is not trained (v14 family 1 is empty); the assertion documents G subset U"
+   }
+  },
+  "heads": [
+   "cardiomegaly",
+   "consolidation",
+   "edema",
+   "infiltrate",
+   "pleural_effusion",
+   "pneumothorax"
+  ],
+  "control_rule": "R_U = row-level head-set matched random control: per changed row of U (view, fold, head set S), a distinct eligible row of the same view and fold silent on every head in S receives exactly S in the same order and position (fixed seed); the marginal per-head matched control is a descriptive sensitivity arm only, never the primary contrast",
+  "family": {
+   "contrast": "R-all+complete-auditfree2 vs R-all+random-rowset-auditfree2 (U vs R_U); secondary descriptive: U vs R-all",
+   "members": [
+    {
+     "set": "vindr",
+     "label": "Cardiomegaly",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 2691,
+     "heads": [
+      "cardiomegaly"
+     ],
+     "mde_planning": 0.0222,
+     "key": "vindr:Cardiomegaly:fpr",
+     "dose_by_view": {
+      "cardiomegaly": {
+       "AP": 659,
+       "PA": 86
+      }
+     },
+     "status": "additions of ['cardiomegaly'] on the benchmark's view(s) ['PA']: [86]"
+    },
+    {
+     "set": "vindr",
+     "label": "Consolidation",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 2904,
+     "heads": [
+      "consolidation"
+     ],
+     "mde_planning": 0.0213,
+     "key": "vindr:Consolidation:fpr",
+     "dose_by_view": {
+      "consolidation": {
+       "AP": 144,
+       "PA": 21
+      }
+     },
+     "status": "additions of ['consolidation'] on the benchmark's view(s) ['PA']: [21]"
+    },
+    {
+     "set": "vindr",
+     "label": "Edema",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 3000,
+     "heads": [
+      "edema"
+     ],
+     "mde_planning": 0.021,
+     "key": "vindr:Edema:fpr",
+     "dose_by_view": {
+      "edema": {
+       "AP": 1371,
+       "PA": 238
+      }
+     },
+     "status": "additions of ['edema'] on the benchmark's view(s) ['PA']: [238]"
+    },
+    {
+     "set": "vindr",
+     "label": "Pleural effusion",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 2889,
+     "heads": [
+      "pleural_effusion"
+     ],
+     "mde_planning": 0.0214,
+     "key": "vindr:Pleural effusion:fpr",
+     "dose_by_view": {
+      "pleural_effusion": {
+       "AP": 1966,
+       "PA": 231
+      }
+     },
+     "status": "additions of ['pleural_effusion'] on the benchmark's view(s) ['PA']: [231]"
+    },
+    {
+     "set": "vindr",
+     "label": "Pneumothorax",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 2982,
+     "heads": [
+      "pneumothorax"
+     ],
+     "mde_planning": 0.0211,
+     "key": "vindr:Pneumothorax:fpr",
+     "dose_by_view": {
+      "pneumothorax": {
+       "AP": 660,
+       "PA": 456
+      }
+     },
+     "status": "additions of ['pneumothorax'] on the benchmark's view(s) ['PA']: [456]"
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Cardiomegaly",
+     "stat": "recall",
+     "readout": "recall",
+     "n": 151,
+     "heads": [
+      "cardiomegaly"
+     ],
+     "mde_planning": 0.2148,
+     "key": "chexpert_test:Cardiomegaly:recall",
+     "dose_by_view": {
+      "cardiomegaly": {
+       "AP": 659,
+       "PA": 86
+      }
+     },
+     "status": "benchmark records no view: read view-free; additions of ['cardiomegaly'] by view {'AP': 659, 'PA': 86}"
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Cardiomegaly",
+     "stat": "fpr",
+     "readout": "FPR",
+     "n": 349,
+     "heads": [
+      "cardiomegaly"
+     ],
+     "mde_planning": 0.0616,
+     "key": "chexpert_test:Cardiomegaly:fpr",
+     "dose_by_view": {
+      "cardiomegaly": {
+       "AP": 659,
+       "PA": 86
+      }
+     },
+     "status": "benchmark records no view: read view-free; additions of ['cardiomegaly'] by view {'AP': 659, 'PA': 86}"
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Edema",
+     "stat": "recall",
+     "readout": "recall",
+     "n": 78,
+     "heads": [
+      "edema"
+     ],
+     "mde_planning": 0.2988,
+     "key": "chexpert_test:Edema:recall",
+     "dose_by_view": {
+      "edema": {
+       "AP": 1371,
+       "PA": 238
+      }
+     },
+     "status": "benchmark records no view: read view-free; additions of ['edema'] by view {'AP': 1371, 'PA': 238}"
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Edema",
+     "stat": "fpr",
+     "readout": "FPR",
+     "n": 422,
+     "heads": [
+      "edema"
+     ],
+     "mde_planning": 0.056,
+     "key": "chexpert_test:Edema:fpr",
+     "dose_by_view": {
+      "edema": {
+       "AP": 1371,
+       "PA": 238
+      }
+     },
+     "status": "benchmark records no view: read view-free; additions of ['edema'] by view {'AP': 1371, 'PA': 238}"
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Lung Opacity",
+     "stat": "recall",
+     "readout": "recall",
+     "n": 264,
+     "heads": [
+      "infiltrate"
+     ],
+     "mde_planning": 0.1624,
+     "key": "chexpert_test:Lung Opacity:recall",
+     "dose_by_view": {
+      "infiltrate": {
+       "AP": 127,
+       "PA": 13
+      }
+     },
+     "status": "benchmark records no view: read view-free; additions of ['infiltrate'] by view {'AP': 127, 'PA': 13}"
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Lung Opacity",
+     "stat": "fpr",
+     "readout": "FPR",
+     "n": 236,
+     "heads": [
+      "infiltrate"
+     ],
+     "mde_planning": 0.0749,
+     "key": "chexpert_test:Lung Opacity:fpr",
+     "dose_by_view": {
+      "infiltrate": {
+       "AP": 127,
+       "PA": 13
+      }
+     },
+     "status": "benchmark records no view: read view-free; additions of ['infiltrate'] by view {'AP': 127, 'PA': 13}"
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Pleural Effusion",
+     "stat": "recall",
+     "readout": "recall",
+     "n": 104,
+     "heads": [
+      "pleural_effusion"
+     ],
+     "mde_planning": 0.2588,
+     "key": "chexpert_test:Pleural Effusion:recall",
+     "dose_by_view": {
+      "pleural_effusion": {
+       "AP": 1966,
+       "PA": 231
+      }
+     },
+     "status": "benchmark records no view: read view-free; additions of ['pleural_effusion'] by view {'AP': 1966, 'PA': 231}"
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Pleural Effusion",
+     "stat": "fpr",
+     "readout": "FPR",
+     "n": 396,
+     "heads": [
+      "pleural_effusion"
+     ],
+     "mde_planning": 0.0578,
+     "key": "chexpert_test:Pleural Effusion:fpr",
+     "dose_by_view": {
+      "pleural_effusion": {
+       "AP": 1966,
+       "PA": 231
+      }
+     },
+     "status": "benchmark records no view: read view-free; additions of ['pleural_effusion'] by view {'AP': 1966, 'PA': 231}"
+    }
+   ],
+   "size": 13,
+   "rule": "HOLM inside this family only (v12 family 1 untouched): member p at the SELECTED checkpoint = seed-mean two-sided bootstrap p ((k+1)/(B+1)) of the effect U - R_U of the member statistic (patient-cluster bootstrap recomputed from resampled counts, identical replicates for both arms and all seeds); a member is significant iff its decision-rule outcome is supported (interval excludes 0 in the effect's direction AND every seed has that sign) AND its Holm p < 0.05. The FINAL checkpoint is a consistency check: the same member's seed-mean effect must have the same sign (reported as consistent / inconsistent; it is not a second family). VinDr members are false-claim rates (FPR on images no radiologist marks for the label); CheXpert members are recall and FPR of labels with >= 30 positives; heads with fewer positives are read by mention rate and false-claim rate only",
+   "alpha": 0.05,
+   "mde_rule": "planning MDE per member: two-sided alpha 0.05/family size, power 0.8, unpaired normal approximation with planning proportions {'recall': 0.5, 'fpr': 0.05} (conservative: ignores pairing on identical images and seed averaging); computed from reference-label counts only",
+   "inference_unit": "paired patient-cluster bootstrap across arms on identical images, seed-mean effect over seeds 29/43/71 (seed s of U vs seed s of R_U), across-seed SD reported; three seeds carry no between-seed test"
+  },
+  "predictions": {
+   "cardiomegaly": "no prediction written by the review; reported under the same family rule",
+   "consolidation": "low PA image-truth precision: raises the VinDr false-claim rate vs R-all and does not beat R_U on recall",
+   "edema": "plausible precision: may gain CheXpert recall vs R_U",
+   "infiltrate": "low PA image-truth precision: raises false claims vs R-all and does not beat R_U on recall (CheXpert Lung Opacity)",
+   "pleural_effusion": "plausible precision: may gain CheXpert recall vs R_U",
+   "pneumothorax": "worst calibration evidence (1,198 sentences, noise share > 0.9): raises the VinDr false-claim rate vs R-all and vs R_U; the single most informative E2 readout (PA-evaluable)"
+  },
+  "view_caveat": "audit-free additions are AP-dominated while VinDr is PA-only and CheXpert test prompts carry no view: VinDr tests transfer of AP-learned claims to PA prompts (a null there is not evidence of safety) and CheXpert is read view-free (CheXpert test records no AP/PA metadata, so no view-stratified CheXpert reading exists); untagged views (22.8% of rows) are never completed, as in E1",
+  "descriptive_readouts": [
+   "label-free mention rate and positive-claim rate per head (swrd.eval.external mechanism --labels e2) on both test sets, and on the 942-study student_validation set through the validation chains",
+   "co-occurrence: share of generated reports positively claiming >= 2 of the audit-free heads' labels, U vs R_U (mechanism output multi_label_claim_rate)",
+   "non-target guard: macro recall over non-added findings (contrast non_target block)",
+   "U vs R-all and the marginal control: descriptive, intervals only",
+   "data-side precision of U additions (txv specificity per head x view, S2 PA image-truth bounds): from worker-CP's build reports, descriptive"
+  ],
+  "test_time_audit_free": "R-all+test-time-audit-free: R-all generations completed at inference with U's head/views and points (swrd.eval.test_time_completion apply --build e2_audit_free); descriptive with CIs, no significance language"
+ },
+ "descriptive_v14": {
+  "rule": "every item here is DESCRIPTIVE: point estimates with patient-cluster bootstrap 95% intervals, no p values or significance language, never in a Holm family or a headline statement",
+  "references": "R-seed v7 and R-all v7 (pinned bases_v14): per-arm metrics and R-all vs R-seed on both test sets",
+  "E3_external_baselines": {
+   "models": [
+    "MAIRA-2",
+    "CheXagent-2-3b",
+    "LLaVA-Rad",
+    "MedGemma-4b-it"
+   ],
+   "prompts": "each model card's published prompt and decoding; output sections normalised before labelling with the pinned normaliser version and generation settings",
+   "pins": {
+    "overlap_table": {
+     "path": "docs/reports/S11/20261101T1044_e3_overlap_table.json",
+     "sha256": "c27a376954d952bd46c7ab12f8b641ffae2a23d1aee43c1ab447bc500eb4d6a2"
+    },
+    "dev_report": {
+     "path": "docs/reports/S11/20261101T1644_e3_baselines_dev.md",
+     "sha256": "1eee1b519eeed8802e7942732cce45344e61bb6d74ac0978e7b167797ec840e9"
+    },
+    "code_sha256": {
+     "src/swrd/eval/baselines/__init__.py": "ff1ac40fc2b243cb9d6d669790a97370e394fc39a82b095123a43a66a133f2a1",
+     "src/swrd/eval/baselines/common.py": "efeea7a11a4f8d806419bb55f7471e24b4676ad7f1a4424acc900558ad2dce58",
+     "src/swrd/eval/baselines/generate.py": "160360c81007f72256aac6c0913661b1c1808356f52471245a787d6c314d43f0",
+     "jobs/e3_baseline_generate.sh": "141538a580574391edf7c663d98b29a4a3188c36f553226c691b240f2c60fa14"
+    },
+    "normaliser_version": "e3-section-normaliser-2",
+    "max_new_tokens": 1024,
+    "generation_rules": {
+     "once": "baseline test generations are made exactly once per model and benchmark (GPU numerics make reruns not bitwise reproducible: CheXagent 90/197 identical on dev reruns); a rerun is never substituted",
+     "length_and_mentions": "every baseline row reports the median report length in words after normalisation and the macro mention rate next to its metrics, because labeller hits depend on length",
+     "truncation": "outputs truncated at max_new_tokens = 1024 are kept as generated and counted (share reported per model); never regenerated or dropped",
+     "length_deviation": "one common max_new_tokens = 1024 for all four (= LLaVA-Rad's card); a disclosed deviation from MedGemma 200 / CheXagent 512 / MAIRA-2 300; every other card prompt / decoding setting unchanged, greedy, batch 1"
+    }
+   },
+   "rule": "per-model metrics with intervals on both test sets, scored once; no ranking across a training-data overlap flag (pinned overlap table); labeller-style bias (CheXbert trained on MIMIC / CheXpert-style reports) disclosed. CheXpert val was used for E3 prompt handling (and for v1 reader thresholds): disclosed"
+  },
+  "E6_test_time_audit_free": "R-all+test-time-audit-free: R-all v7 generations completed at inference with the pinned audit-free-2 build's head/views and points (test_time_completion apply --build e2_audit_free): descriptive. The rule-5.1 test-time arm is dropped (its build is superseded and family 1 is empty)",
+  "mechanism_check": "label-free mention / positive-claim rates and the co-occurrence rate of the audit-free heads' labels for every arm on both test sets (external mechanism --labels e2): descriptive",
+  "report_quality_guard": "for every arm, the report-quality metrics the validation chains already compute (the internal RadGraph binding and the other per-sample metrics of swrd.eval.score) on student_validation, vs R-all: descriptive (a gain bought by degrading the rest of the report must be visible)",
+  "dropped_from_test_scoring": {
+   "e2_marginal_control": "not rebuilt for v7 (channel/04 ~17:00)",
+   "E5_data_quality": "validation only, on the old runs (never a test set or final_evaluation)",
+   "rule-5.1 / 5.2 gated arms and the rule-5.1 test-time arm": "superseded; family 1 empty"
+  },
+  "late_arm_rule": "test sets are scored exactly once for all frozen arms. An arm may be scored after that single scoring only if its build (manifest sha256 pinned in this protocol) and this protocol were frozen before the scoring; any arm whose build or protocol entry is created later is never scored on a test set"
+ },
+ "vocabulary": {
+  "path": "configs/state_vocabulary.yaml",
+  "sha256": "e3f4d111ff3fea39b6e65d3aff0a69b8c6aeeeac38fa5a64ba0a463f5bc50a1c"
+ },
+ "registry": {
+  "partitions": "outputs/registry/s0_partitions_v2_20261029T075451Z.jsonl",
+  "sha256": "c402157cf3ef08ae74bcd02e68d87f69f51200004e9a5014cccac6f04c0f2655"
+ },
+ "sets": {
+  "vindr": {
+   "role": "secondary",
+   "mapping": "vindr",
+   "normal_column": "No finding",
+   "ref": "data/external/vindr_test_s0rebuild_20261028T170354Z/ref.parquet",
+   "sft": "data/external/vindr_test_s0rebuild_20261028T170354Z/sft.jsonl",
+   "registry_namespace": "vindr",
+   "view_source": {
+    "kind": "sft_prompt",
+    "why": "swrd.data.e1_sets vindr writes the benchmark's documented view (PA) into the prompt ('Views: PA.'); the release is PA-only"
+   },
+   "description": "VinDr-CXR 1.0.0 test, 3,000 PA images / 3,000 patients, consensus of 5 radiologists; checksum-verified S0 rebuild (docs/reports/S0/20261028T1720_s0_vindr_refetch_and_provenance.md)",
+   "primary_endpoint_candidates_v10": {
+    "Cardiomegaly": {
+     "heads": [
+      "cardiomegaly"
+     ],
+     "test_positives": 309,
+     "test_negatives": 2691,
+     "eligible": true
+    },
+    "Pleural effusion": {
+     "heads": [
+      "pleural_effusion"
+     ],
+     "test_positives": 111,
+     "test_negatives": 2889,
+     "eligible": true
+    },
+    "Pneumothorax": {
+     "heads": [
+      "pneumothorax"
+     ],
+     "test_positives": 18,
+     "test_negatives": 2982,
+     "eligible": false
+    },
+    "Consolidation": {
+     "heads": [
+      "consolidation"
+     ],
+     "test_positives": 96,
+     "test_negatives": 2904,
+     "eligible": true
+    },
+    "Edema": {
+     "heads": [
+      "edema"
+     ],
+     "test_positives": 0,
+     "test_negatives": 3000,
+     "eligible": false
+    }
+   },
+   "primary_endpoints_v10": [],
+   "primary_endpoint_note_v10": "no primary endpoint: family 1 is EMPTY (the gated qualification admits no head/view; family_1_v14); every reading on this benchmark is secondary / descriptive and nothing enters Holm family 1",
+   "mechanism_labels_v11": [],
+   "harm_guards_v11": [],
+   "primary_endpoint_caveats_v11": {},
+   "e2_mechanism_labels_v13": [
+    "Cardiomegaly",
+    "Consolidation",
+    "Edema",
+    "Pleural effusion",
+    "Pneumothorax"
+   ],
+   "e2_family_members_v13": [
+    {
+     "set": "vindr",
+     "label": "Cardiomegaly",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 2691,
+     "heads": [
+      "cardiomegaly"
+     ]
+    },
+    {
+     "set": "vindr",
+     "label": "Consolidation",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 2904,
+     "heads": [
+      "consolidation"
+     ]
+    },
+    {
+     "set": "vindr",
+     "label": "Edema",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 3000,
+     "heads": [
+      "edema"
+     ]
+    },
+    {
+     "set": "vindr",
+     "label": "Pleural effusion",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 2889,
+     "heads": [
+      "pleural_effusion"
+     ]
+    },
+    {
+     "set": "vindr",
+     "label": "Pneumothorax",
+     "stat": "fpr",
+     "readout": "false-claim rate",
+     "n": 2982,
+     "heads": [
+      "pneumothorax"
+     ]
+    }
+   ],
+   "views": {
+    "source": {
+     "kind": "sft_prompt",
+     "why": "swrd.data.e1_sets vindr writes the benchmark's documented view (PA) into the prompt ('Views: PA.'); the release is PA-only"
+    },
+    "strata": [
+     "AP",
+     "PA"
+    ],
+    "recorded_views": [
+     "PA"
+    ],
+    "counts": {
+     "PA": 3000
+    },
+    "id_view_sha256": "6670f2945b85c0319af51527dfa0bacb42cf3b8c6b23d6dbf89e6965c784be1c",
+    "single_view_identical_to_pooled": true,
+    "endpoint_support_by_view": {
+     "Cardiomegaly": {
+      "PA": {
+       "positives": 309,
+       "negatives": 2691
+      }
+     },
+     "Consolidation": {
+      "PA": {
+       "positives": 96,
+       "negatives": 2904
+      }
+     },
+     "Edema": {
+      "PA": {
+       "positives": 0,
+       "negatives": 3000
+      }
+     },
+     "Pleural effusion": {
+      "PA": {
+       "positives": 111,
+       "negatives": 2889
+      }
+     },
+     "Pneumothorax": {
+      "PA": {
+       "positives": 18,
+       "negatives": 2982
+      }
+     }
+    },
+    "readable": {
+     "Cardiomegaly": [
+      "PA"
+     ],
+     "Consolidation": [
+      "PA"
+     ],
+     "Edema": [],
+     "Pleural effusion": [
+      "PA"
+     ],
+     "Pneumothorax": []
+    }
+   },
+   "ref_sha256": "b9434c4cc4b9b4174425182f474113d7da98e3d1d505b90633d3303d80ff370a",
+   "sft_sha256": "517825cf80f0cfe514f01e32158323fc785cac30179199e89e95cbba62af38e6",
+   "n": 3000,
+   "patients": 3000,
+   "normal_studies": 2051,
+   "normal_claim_excludes": [],
+   "support": {
+    "Cardiomegaly": 309,
+    "Pleural effusion": 111,
+    "Pneumothorax": 18,
+    "Consolidation": 96,
+    "Atelectasis": 86,
+    "Edema": 0,
+    "Nodule/Mass": 176,
+    "Fracture (any)": 13,
+    "Lung Opacity": 84,
+    "Pneumonia": 246
+   },
+   "macro_findings": [
+    "Cardiomegaly",
+    "Pleural effusion",
+    "Pneumothorax",
+    "Consolidation",
+    "Atelectasis",
+    "Nodule/Mass",
+    "Fracture (any)"
+   ],
+   "below_min_support": [
+    "Edema"
+   ],
+   "primary_mapping": {
+    "Cardiomegaly": [
+     "Cardiomegaly"
+    ],
+    "Pleural effusion": [
+     "Pleural Effusion"
+    ],
+    "Pneumothorax": [
+     "Pneumothorax"
+    ],
+    "Consolidation": [
+     "Consolidation"
+    ],
+    "Atelectasis": [
+     "Atelectasis"
+    ],
+    "Edema": [
+     "Edema"
+    ],
+    "Nodule/Mass": [
+     "Lung Lesion"
+    ],
+    "Fracture (any)": [
+     "Fracture"
+    ]
+   },
+   "exploratory_mapping": {
+    "Lung Opacity": [
+     "Lung Opacity",
+     "Consolidation",
+     "Pneumonia",
+     "Edema",
+     "Atelectasis",
+     "Lung Lesion"
+    ],
+    "Pneumonia": [
+     "Pneumonia"
+    ]
+   },
+   "excluded": {
+    "Aortic enlargement": "aortic enlargement is not enlarged cardiomediastinum (CheXbert class covers mediastinal widening/cardiomediastinal silhouette, not the aorta specifically)",
+    "Pleural thickening": "pleural thickening is one member of the broad CheXbert 'Pleural Other' class (which also includes fibrosis, plaques, calcification); not equivalent"
+   },
+   "vocabulary_crosswalk": {
+    "Cardiomegaly": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Cardiomegaly"
+     ],
+     "vocabulary_ids": [
+      "cardiomegaly"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pleural effusion": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pleural Effusion"
+     ],
+     "vocabulary_ids": [
+      "pleural_effusion"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pneumothorax": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pneumothorax"
+     ],
+     "vocabulary_ids": [
+      "pneumothorax"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Consolidation": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Consolidation"
+     ],
+     "vocabulary_ids": [
+      "consolidation"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Atelectasis": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Atelectasis"
+     ],
+     "vocabulary_ids": [
+      "atelectasis"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Edema": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Edema"
+     ],
+     "vocabulary_ids": [
+      "edema"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Nodule/Mass": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Lung Lesion"
+     ],
+     "vocabulary_ids": [
+      "nodule_mass"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Fracture (any)": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Fracture"
+     ],
+     "vocabulary_ids": [
+      "clavicle_fracture",
+      "rib_fracture"
+     ],
+     "derived_from": [
+      "Rib fracture",
+      "Clavicle fracture"
+     ],
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Lung Opacity": {
+     "tier": "exploratory",
+     "chexbert_conditions": [
+      "Lung Opacity",
+      "Consolidation",
+      "Pneumonia",
+      "Edema",
+      "Atelectasis",
+      "Lung Lesion"
+     ],
+     "vocabulary_ids": [
+      "airspace_opacity"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pneumonia": {
+     "tier": "exploratory",
+     "chexbert_conditions": [
+      "Pneumonia"
+     ],
+     "vocabulary_ids": [
+      "pneumonia"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Aortic enlargement": {
+     "tier": "excluded",
+     "reason": "aortic enlargement is not enlarged cardiomediastinum (CheXbert class covers mediastinal widening/cardiomediastinal silhouette, not the aorta specifically)"
+    },
+    "Pleural thickening": {
+     "tier": "excluded",
+     "reason": "pleural thickening is one member of the broad CheXbert 'Pleural Other' class (which also includes fibrosis, plaques, calcification); not equivalent"
+    }
+   },
+   "registry_binding": {
+    "patients": 3000,
+    "roles": {
+     "final_evaluation|quarantined=False": 3000
+    }
+   }
+  },
+  "chexpert_test": {
+   "role": "secondary",
+   "mapping": "chexpert",
+   "normal_column": "No Finding",
+   "ref": "data/external/chexpert_test/ref.parquet",
+   "sft": "data/external/chexpert_test/sft.jsonl",
+   "registry_namespace": "chexpert",
+   "view_source": {
+    "kind": "not_recorded",
+    "why": "CheXlocalize test_labels.csv has no AP/PA column (columns: Path + 14 labels) and the test JPEGs carry no EXIF / DICOM view tag; the prompt says 'unknown'. Read pooled only."
+   },
+   "description": "CheXpert test (CheXlocalize release), 500 studies / 500 patients, first frontal image, majority of 5 radiologists; view tag unavailable (prompt says unknown)",
+   "primary_endpoint_candidates_v10": {
+    "Cardiomegaly": {
+     "heads": [
+      "cardiomegaly"
+     ],
+     "test_positives": 151,
+     "test_negatives": 349,
+     "eligible": true
+    },
+    "Lung Opacity": {
+     "heads": [
+      "airspace_opacity",
+      "infiltrate"
+     ],
+     "test_positives": 264,
+     "test_negatives": 236,
+     "eligible": true
+    },
+    "Edema": {
+     "heads": [
+      "edema"
+     ],
+     "test_positives": 78,
+     "test_negatives": 422,
+     "eligible": true
+    },
+    "Consolidation": {
+     "heads": [
+      "consolidation"
+     ],
+     "test_positives": 29,
+     "test_negatives": 471,
+     "eligible": false
+    },
+    "Pneumothorax": {
+     "heads": [
+      "pneumothorax"
+     ],
+     "test_positives": 9,
+     "test_negatives": 491,
+     "eligible": false
+    },
+    "Pleural Effusion": {
+     "heads": [
+      "pleural_effusion"
+     ],
+     "test_positives": 104,
+     "test_negatives": 396,
+     "eligible": true
+    }
+   },
+   "primary_endpoints_v10": [],
+   "primary_endpoint_note_v10": "no primary endpoint: family 1 is EMPTY (the gated qualification admits no head/view; family_1_v14); every reading on this benchmark is secondary / descriptive and nothing enters Holm family 1",
+   "mechanism_labels_v11": [],
+   "harm_guards_v11": [],
+   "primary_endpoint_caveats_v11": {},
+   "e2_mechanism_labels_v13": [
+    "Cardiomegaly",
+    "Consolidation",
+    "Edema",
+    "Lung Opacity",
+    "Pleural Effusion",
+    "Pneumothorax"
+   ],
+   "e2_family_members_v13": [
+    {
+     "set": "chexpert_test",
+     "label": "Cardiomegaly",
+     "stat": "recall",
+     "readout": "recall",
+     "n": 151,
+     "heads": [
+      "cardiomegaly"
+     ]
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Cardiomegaly",
+     "stat": "fpr",
+     "readout": "FPR",
+     "n": 349,
+     "heads": [
+      "cardiomegaly"
+     ]
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Edema",
+     "stat": "recall",
+     "readout": "recall",
+     "n": 78,
+     "heads": [
+      "edema"
+     ]
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Edema",
+     "stat": "fpr",
+     "readout": "FPR",
+     "n": 422,
+     "heads": [
+      "edema"
+     ]
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Lung Opacity",
+     "stat": "recall",
+     "readout": "recall",
+     "n": 264,
+     "heads": [
+      "infiltrate"
+     ]
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Lung Opacity",
+     "stat": "fpr",
+     "readout": "FPR",
+     "n": 236,
+     "heads": [
+      "infiltrate"
+     ]
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Pleural Effusion",
+     "stat": "recall",
+     "readout": "recall",
+     "n": 104,
+     "heads": [
+      "pleural_effusion"
+     ]
+    },
+    {
+     "set": "chexpert_test",
+     "label": "Pleural Effusion",
+     "stat": "fpr",
+     "readout": "FPR",
+     "n": 396,
+     "heads": [
+      "pleural_effusion"
+     ]
+    }
+   ],
+   "views": {
+    "source": {
+     "kind": "not_recorded",
+     "why": "CheXlocalize test_labels.csv has no AP/PA column (columns: Path + 14 labels) and the test JPEGs carry no EXIF / DICOM view tag; the prompt says 'unknown'. Read pooled only."
+    },
+    "strata": [
+     "AP",
+     "PA"
+    ],
+    "recorded_views": [],
+    "counts": {
+     "not_recorded": 500
+    },
+    "id_view_sha256": "b7231b139506d2ee4952bcc7f810773edbd2e28653cbd371f86eb71cd2892680",
+    "single_view_identical_to_pooled": false,
+    "endpoint_support_by_view": {
+     "Cardiomegaly": {},
+     "Consolidation": {},
+     "Edema": {},
+     "Lung Opacity": {},
+     "Pleural Effusion": {},
+     "Pneumothorax": {}
+    },
+    "readable": {
+     "Cardiomegaly": [],
+     "Consolidation": [],
+     "Edema": [],
+     "Lung Opacity": [],
+     "Pleural Effusion": [],
+     "Pneumothorax": []
+    }
+   },
+   "ref_sha256": "a978b40748a364aeac39c6000f7c066e58c4ca9368baa000ffaf1038ad0d873b",
+   "sft_sha256": "3becaf64a9da69829adf0e935b29190471774292b6c98f3c1518e67f664ca15d",
+   "n": 500,
+   "patients": 500,
+   "normal_studies": 62,
+   "normal_claim_excludes": [
+    "Support Devices"
+   ],
+   "support": {
+    "Enlarged Cardiomediastinum": 253,
+    "Cardiomegaly": 151,
+    "Lung Opacity": 264,
+    "Lung Lesion": 8,
+    "Edema": 78,
+    "Consolidation": 29,
+    "Pneumonia": 11,
+    "Atelectasis": 153,
+    "Pneumothorax": 9,
+    "Pleural Effusion": 104,
+    "Pleural Other": 4,
+    "Fracture": 5,
+    "Support Devices": 261
+   },
+   "macro_findings": [
+    "Enlarged Cardiomediastinum",
+    "Cardiomegaly",
+    "Lung Opacity",
+    "Edema",
+    "Consolidation",
+    "Pneumonia",
+    "Atelectasis",
+    "Pleural Effusion",
+    "Support Devices"
+   ],
+   "below_min_support": [
+    "Fracture",
+    "Lung Lesion",
+    "Pleural Other",
+    "Pneumothorax"
+   ],
+   "primary_mapping": {
+    "Enlarged Cardiomediastinum": [
+     "Enlarged Cardiomediastinum"
+    ],
+    "Cardiomegaly": [
+     "Cardiomegaly"
+    ],
+    "Lung Opacity": [
+     "Lung Opacity"
+    ],
+    "Lung Lesion": [
+     "Lung Lesion"
+    ],
+    "Edema": [
+     "Edema"
+    ],
+    "Consolidation": [
+     "Consolidation"
+    ],
+    "Pneumonia": [
+     "Pneumonia"
+    ],
+    "Atelectasis": [
+     "Atelectasis"
+    ],
+    "Pneumothorax": [
+     "Pneumothorax"
+    ],
+    "Pleural Effusion": [
+     "Pleural Effusion"
+    ],
+    "Pleural Other": [
+     "Pleural Other"
+    ],
+    "Fracture": [
+     "Fracture"
+    ],
+    "Support Devices": [
+     "Support Devices"
+    ]
+   },
+   "exploratory_mapping": {},
+   "excluded": {},
+   "vocabulary_crosswalk": {
+    "Enlarged Cardiomediastinum": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Enlarged Cardiomediastinum"
+     ],
+     "vocabulary_ids": [
+      "aortic_enlargement",
+      "enlarged_cardiomediastinum",
+      "hilar_enlargement"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Cardiomegaly": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Cardiomegaly"
+     ],
+     "vocabulary_ids": [
+      "cardiomegaly"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Lung Opacity": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Lung Opacity"
+     ],
+     "vocabulary_ids": [
+      "airspace_opacity",
+      "fibrosis",
+      "infiltrate",
+      "interstitial_pattern"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Lung Lesion": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Lung Lesion"
+     ],
+     "vocabulary_ids": [
+      "cavity",
+      "cyst",
+      "nodule_mass"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Edema": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Edema"
+     ],
+     "vocabulary_ids": [
+      "edema",
+      "kerley_lines"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Consolidation": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Consolidation"
+     ],
+     "vocabulary_ids": [
+      "consolidation"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pneumonia": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pneumonia"
+     ],
+     "vocabulary_ids": [
+      "pneumonia"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Atelectasis": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Atelectasis"
+     ],
+     "vocabulary_ids": [
+      "atelectasis"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pneumothorax": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pneumothorax"
+     ],
+     "vocabulary_ids": [
+      "pneumothorax"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pleural Effusion": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pleural Effusion"
+     ],
+     "vocabulary_ids": [
+      "pleural_effusion"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pleural Other": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pleural Other"
+     ],
+     "vocabulary_ids": [
+      "pleural_calcification",
+      "pleural_thickening"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Fracture": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Fracture"
+     ],
+     "vocabulary_ids": [
+      "clavicle_fracture",
+      "other_fracture",
+      "rib_fracture"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Support Devices": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Support Devices"
+     ],
+     "vocabulary_ids": [
+      "cardiac_device",
+      "central_venous_catheter",
+      "chest_tube",
+      "endotracheal_tube",
+      "enteric_tube",
+      "orthopedic_hardware",
+      "other_device",
+      "picc",
+      "port_catheter",
+      "stent",
+      "sternotomy_wires",
+      "swan_ganz_catheter",
+      "tracheostomy_tube",
+      "umbilical_catheter",
+      "valve_replacement"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    }
+   },
+   "registry_binding": {
+    "patients": 500,
+    "roles": {
+     "final_evaluation|quarantined=False": 500
+    }
+   }
+  },
+  "chexpert_val_dev": {
+   "role": "development",
+   "mapping": "chexpert",
+   "normal_column": "No Finding",
+   "view_source": {
+    "kind": "chexpert_csv",
+    "csv": "val_labels.csv",
+    "column": "AP/PA",
+    "why": "CheXpert val_labels.csv records AP/PA per image; the view of the first frontal image (the one build-chexpert-val selects) is the study's view. The prompt still says 'unknown' (as built)."
+   },
+   "description": "CheXpert validation (CheXlocalize release), 200 studies / 200 patients, first frontal image, 3-radiologist consensus. Used in v1 for reader thresholds (S0 exposure ledger). Pipeline checks only; never reported as a result.",
+   "ref": "data/external/chexpert_val_dev_20261030/ref.parquet",
+   "sft": "data/external/chexpert_val_dev_20261030/sft.jsonl",
+   "primary_endpoint_candidates_v10": {
+    "Cardiomegaly": {
+     "heads": [
+      "cardiomegaly"
+     ],
+     "test_positives": 66,
+     "test_negatives": 134,
+     "eligible": true
+    },
+    "Lung Opacity": {
+     "heads": [
+      "airspace_opacity",
+      "infiltrate"
+     ],
+     "test_positives": 116,
+     "test_negatives": 84,
+     "eligible": true
+    },
+    "Edema": {
+     "heads": [
+      "edema"
+     ],
+     "test_positives": 42,
+     "test_negatives": 158,
+     "eligible": true
+    },
+    "Consolidation": {
+     "heads": [
+      "consolidation"
+     ],
+     "test_positives": 32,
+     "test_negatives": 168,
+     "eligible": true
+    },
+    "Pneumothorax": {
+     "heads": [
+      "pneumothorax"
+     ],
+     "test_positives": 6,
+     "test_negatives": 194,
+     "eligible": false
+    },
+    "Pleural Effusion": {
+     "heads": [
+      "pleural_effusion"
+     ],
+     "test_positives": 64,
+     "test_negatives": 136,
+     "eligible": true
+    }
+   },
+   "primary_endpoints_v10": [],
+   "primary_endpoint_note_v10": "no primary endpoint: family 1 is EMPTY (the gated qualification admits no head/view; family_1_v14); every reading on this benchmark is secondary / descriptive and nothing enters Holm family 1",
+   "mechanism_labels_v11": [],
+   "harm_guards_v11": [],
+   "primary_endpoint_caveats_v11": {},
+   "e2_mechanism_labels_v13": [
+    "Cardiomegaly",
+    "Consolidation",
+    "Edema",
+    "Lung Opacity",
+    "Pleural Effusion",
+    "Pneumothorax"
+   ],
+   "e2_family_members_v13": [],
+   "views": {
+    "source": {
+     "kind": "chexpert_csv",
+     "csv": "val_labels.csv",
+     "column": "AP/PA",
+     "why": "CheXpert val_labels.csv records AP/PA per image; the view of the first frontal image (the one build-chexpert-val selects) is the study's view. The prompt still says 'unknown' (as built).",
+     "csv_path": "/mnt/hdd2/Abhijit/data/aimi/chexlocalize/CheXpert/val_labels.csv",
+     "csv_sha256": "7739f6850dc581938aebe13ccc1931e6d980cf7e981cbcd255068b3aac3ef442"
+    },
+    "strata": [
+     "AP",
+     "PA"
+    ],
+    "recorded_views": [
+     "AP",
+     "PA"
+    ],
+    "counts": {
+     "AP": 169,
+     "PA": 31
+    },
+    "id_view_sha256": "c9e6cc949e8ddf31dfd603f70d6472fb000fe898193606e2f5e12a55afd31a18",
+    "single_view_identical_to_pooled": false,
+    "endpoint_support_by_view": {
+     "Cardiomegaly": {
+      "AP": {
+       "positives": 65,
+       "negatives": 104
+      },
+      "PA": {
+       "positives": 1,
+       "negatives": 30
+      }
+     },
+     "Consolidation": {
+      "AP": {
+       "positives": 32,
+       "negatives": 137
+      },
+      "PA": {
+       "positives": 0,
+       "negatives": 31
+      }
+     },
+     "Edema": {
+      "AP": {
+       "positives": 41,
+       "negatives": 128
+      },
+      "PA": {
+       "positives": 1,
+       "negatives": 30
+      }
+     },
+     "Lung Opacity": {
+      "AP": {
+       "positives": 109,
+       "negatives": 60
+      },
+      "PA": {
+       "positives": 7,
+       "negatives": 24
+      }
+     },
+     "Pleural Effusion": {
+      "AP": {
+       "positives": 61,
+       "negatives": 108
+      },
+      "PA": {
+       "positives": 3,
+       "negatives": 28
+      }
+     },
+     "Pneumothorax": {
+      "AP": {
+       "positives": 5,
+       "negatives": 164
+      },
+      "PA": {
+       "positives": 1,
+       "negatives": 30
+      }
+     }
+    },
+    "readable": {
+     "Cardiomegaly": [
+      "AP"
+     ],
+     "Consolidation": [
+      "AP"
+     ],
+     "Edema": [
+      "AP"
+     ],
+     "Lung Opacity": [
+      "AP"
+     ],
+     "Pleural Effusion": [
+      "AP"
+     ],
+     "Pneumothorax": []
+    }
+   },
+   "ref_sha256": "a68d765d0eeb9009e15dd3c6367a797ca9d552aa025759573df8bf7c342f8d5d",
+   "sft_sha256": "8ae4682d9524511ef4f02ec34d8c2e5016e4ffd9e456fa9a9105115638d029ff",
+   "n": 200,
+   "patients": 200,
+   "normal_studies": 26,
+   "normal_claim_excludes": [
+    "Support Devices"
+   ],
+   "support": {
+    "Enlarged Cardiomediastinum": 105,
+    "Cardiomegaly": 66,
+    "Lung Opacity": 116,
+    "Lung Lesion": 1,
+    "Edema": 42,
+    "Consolidation": 32,
+    "Pneumonia": 8,
+    "Atelectasis": 75,
+    "Pneumothorax": 6,
+    "Pleural Effusion": 64,
+    "Pleural Other": 1,
+    "Fracture": 0,
+    "Support Devices": 99
+   },
+   "macro_findings": [
+    "Enlarged Cardiomediastinum",
+    "Cardiomegaly",
+    "Lung Opacity",
+    "Edema",
+    "Consolidation",
+    "Atelectasis",
+    "Pleural Effusion",
+    "Support Devices"
+   ],
+   "below_min_support": [
+    "Fracture",
+    "Lung Lesion",
+    "Pleural Other",
+    "Pneumonia",
+    "Pneumothorax"
+   ],
+   "primary_mapping": {
+    "Enlarged Cardiomediastinum": [
+     "Enlarged Cardiomediastinum"
+    ],
+    "Cardiomegaly": [
+     "Cardiomegaly"
+    ],
+    "Lung Opacity": [
+     "Lung Opacity"
+    ],
+    "Lung Lesion": [
+     "Lung Lesion"
+    ],
+    "Edema": [
+     "Edema"
+    ],
+    "Consolidation": [
+     "Consolidation"
+    ],
+    "Pneumonia": [
+     "Pneumonia"
+    ],
+    "Atelectasis": [
+     "Atelectasis"
+    ],
+    "Pneumothorax": [
+     "Pneumothorax"
+    ],
+    "Pleural Effusion": [
+     "Pleural Effusion"
+    ],
+    "Pleural Other": [
+     "Pleural Other"
+    ],
+    "Fracture": [
+     "Fracture"
+    ],
+    "Support Devices": [
+     "Support Devices"
+    ]
+   },
+   "exploratory_mapping": {},
+   "excluded": {},
+   "vocabulary_crosswalk": {
+    "Enlarged Cardiomediastinum": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Enlarged Cardiomediastinum"
+     ],
+     "vocabulary_ids": [
+      "aortic_enlargement",
+      "enlarged_cardiomediastinum",
+      "hilar_enlargement"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Cardiomegaly": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Cardiomegaly"
+     ],
+     "vocabulary_ids": [
+      "cardiomegaly"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Lung Opacity": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Lung Opacity"
+     ],
+     "vocabulary_ids": [
+      "airspace_opacity",
+      "fibrosis",
+      "infiltrate",
+      "interstitial_pattern"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Lung Lesion": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Lung Lesion"
+     ],
+     "vocabulary_ids": [
+      "cavity",
+      "cyst",
+      "nodule_mass"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Edema": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Edema"
+     ],
+     "vocabulary_ids": [
+      "edema",
+      "kerley_lines"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Consolidation": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Consolidation"
+     ],
+     "vocabulary_ids": [
+      "consolidation"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pneumonia": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pneumonia"
+     ],
+     "vocabulary_ids": [
+      "pneumonia"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Atelectasis": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Atelectasis"
+     ],
+     "vocabulary_ids": [
+      "atelectasis"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pneumothorax": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pneumothorax"
+     ],
+     "vocabulary_ids": [
+      "pneumothorax"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pleural Effusion": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pleural Effusion"
+     ],
+     "vocabulary_ids": [
+      "pleural_effusion"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Pleural Other": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Pleural Other"
+     ],
+     "vocabulary_ids": [
+      "pleural_calcification",
+      "pleural_thickening"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Fracture": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Fracture"
+     ],
+     "vocabulary_ids": [
+      "clavicle_fracture",
+      "other_fracture",
+      "rib_fracture"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    },
+    "Support Devices": {
+     "tier": "primary",
+     "chexbert_conditions": [
+      "Support Devices"
+     ],
+     "vocabulary_ids": [
+      "cardiac_device",
+      "central_venous_catheter",
+      "chest_tube",
+      "endotracheal_tube",
+      "enteric_tube",
+      "orthopedic_hardware",
+      "other_device",
+      "picc",
+      "port_catheter",
+      "stent",
+      "sternotomy_wires",
+      "swan_ganz_catheter",
+      "tracheostomy_tube",
+      "umbilical_catheter",
+      "valve_replacement"
+     ],
+     "derived_from": null,
+     "vocabulary_ids_with_other_chexpert_class": []
+    }
+   },
+   "registry_binding": {
+    "patients": 200,
+    "in_registry": 0
+   }
+  }
+ },
+ "extractor": {
+  "name": "CheXbert (Smit et al. 2020) via RadEval F1CheXbert.get_labels(mode='classification')",
+  "package": "radeval",
+  "version": "2.2.2",
+  "commit": "d412dc2da7df92f72d0b7128aee57b0237ec1b9a",
+  "checkpoint": "/mnt/hdd2/Abhijit/.cache/huggingface/hub/models--StanfordAIMI--RRG_scorers/snapshots/6646433b3ad83a10f6e141db76d0ece44312b236/chexbert.pth",
+  "checkpoint_sha256": "6550703c92d640e1e04d8105a7a185d76ece0f25fcbf033d292785bf22c0fde1",
+  "conditions": [
+   "Enlarged Cardiomediastinum",
+   "Cardiomegaly",
+   "Lung Opacity",
+   "Lung Lesion",
+   "Edema",
+   "Consolidation",
+   "Pneumonia",
+   "Atelectasis",
+   "Pneumothorax",
+   "Pleural Effusion",
+   "Pleural Other",
+   "Fracture",
+   "Support Devices",
+   "No Finding"
+  ],
+  "input": "swrd.data.sft.clean_text(prediction), whole generated report",
+  "codes": {
+   "1": "positive",
+   "-1": "uncertain",
+   "0": "negative or not mentioned"
+  },
+  "independence": "CheXbert is not used by the engine (parser/auditor are local LLMs; readers are image classifiers); it never selects data or checkpoints"
+ },
+ "semantics": {
+  "primary": {
+   "positive_codes": [
+    1,
+    -1
+   ],
+   "name": "uncertain_counts_positive"
+  },
+  "strict_sensitivity": {
+   "positive_codes": [
+    1
+   ],
+   "name": "positive_only"
+  }
+ },
+ "unknown_handling": {
+  "reference": "benchmark consensus labels are binary; any missing or non-0/1 value fails loudly",
+  "prediction_uncertain": "primary: CheXbert uncertain (-1) counts as a positive assertion (hedged mention); strict sensitivity: positives only",
+  "prediction_not_mentioned": "negative (a report that omits a finding asserts nothing about it)",
+  "inference_failure": "intention to treat: a missing prediction is an empty report (all conditions 0), counted and reported; denominators never shrink",
+  "undefined_metric": "precision with no predicted positives, recall with no reference positives, F1 with neither: null, never 0; a macro with any undefined finding is null; undefined bootstrap replicates are counted and excluded from the interval"
+ },
+ "statistics": {
+  "per_finding": [
+   "support",
+   "negatives",
+   "predicted_positive",
+   "mentioned",
+   "tp",
+   "fp",
+   "fn",
+   "tn",
+   "precision",
+   "recall (positive recall on reference positives)",
+   "f1",
+   "specificity (TN / reference negatives)",
+   "fpr (FP / reference negatives)",
+   "mention_rate (share of generated reports stating the finding at all: raw CheXbert class positive, negative or uncertain for any mapped condition)"
+  ],
+  "per_report": [
+   "mean_report_words (whitespace tokens of clean_text(prediction); ITT empty = 0)"
+  ],
+  "overall_and_subsets": "each per-finding statistic is macro-averaged over macro_findings ('macro_'), the target findings ('target_') and the non-target findings ('non_target_')",
+  "mention_extraction": "raw CheXbert head classes (0 blank, 1 positive, 2 negative, 3 uncertain) from the pinned checkpoint, stored as scores/chexbert_raw4_labels.parquet; they must reproduce the RadEval classification labels exactly (1->1, 3->-1, 0/2->0) or labelling fails",
+  "grounding_reading": "Per contrast (arm A vs comparator B; effects A - B), overall (macro), target macro, non-target macro and per macro finding. 'Rises' / 'falls' = the frozen decision-rule outcome supported_increase / supported_decrease (seed-mean patient interval excludes 0 and every seed has that sign). 'Recall does not fall' = NON-INFERIORITY: seed-mean recall interval lower bound >= -0.02 absolute AND no seed's recall change below -0.02. Readings, in order: (0) per finding only: fewer than 30 reference positives or reference negatives on the benchmark -> 'insufficient_support' (statistics still reported); (1) FPR route = recall does not fall AND false-positive rate falls; F1 route = recall does not fall AND F1 rises AND (v8) the false-positive rate does not rise: NON-INFERIORITY, seed-mean FPR interval upper bound <= +0.02 AND no seed's FPR change above +0.02; (2) if only the FPR route holds and the mention rate falls AND recall falls (point change < 0) in every seed -> 'mentions_fewer_findings'; (3) else if either route holds -> 'improved_image_grounded_reporting'; (4) else if the mention rate falls AND recall falls -> 'mentions_fewer_findings'; (5) else 'not_established'.",
+  "grounding_reading_parameters": {
+   "recall_noninferiority_delta": 0.02,
+   "fpr_noninferiority_delta_f1_route": 0.02,
+   "min_reading_support": 30
+  },
+  "required_arms": [
+   "R-matched",
+   "R-structured",
+   "R-null",
+   "R+verified"
+  ],
+  "required_contrasts": [
+   "R+verified vs R-matched",
+   "R+verified vs R-structured",
+   "R+verified vs R-null",
+   "R-structured vs R-matched",
+   "R-null vs R-matched"
+  ],
+  "per_arm_tables": "every statistic above for each of the four matched arms and each seed (score), overall, target and non-target",
+  "macro": "unweighted mean of per-finding F1 (and precision, recall) over macro_findings (primary tier, >= 10 reference positives, fixed at freeze from reference labels)",
+  "primary_endpoint": "Holm family 1 is EMPTY (v14): derived mechanically from the gated qualification (rule 5.3), no head/view passes all gates at this scale, so no per-finding primary endpoint exists on any benchmark (family_1_v14 gives the per-head reasons). This is a result, not a missing analysis. The confirmatory family is the E2 family (e2_v14); macro-F1 and every other reading are secondary / descriptive",
+  "secondary_endpoints": [
+   "macro-F1 on chexpert_test",
+   "per-finding precision / recall / F1 with support",
+   "strict-semantics macro-F1",
+   "normal-study false-claim rate (share of reference normal studies with >= 1 positive primary-tier mention, excluding the set's normal_claim_excludes, i.e. labels its normal class admits)",
+   "target / non-target macro-F1 (target = frozen corpus operator/finding set via vocabulary_crosswalk)",
+   "exploratory tier per finding"
+  ],
+  "bootstrap": {
+   "replicates": 2000,
+   "seed": 20261028,
+   "unit": "patient",
+   "method": "percentile 95% interval; each replicate resamples patients with replacement (swrd.eval.score.cluster_bootstrap_indices draws) and RECOMPUTES TP/FP/FN totals and every metric from them; paired contrasts use identical replicates for both arms and all seeds"
+  },
+  "seeds": {
+   "headline": [
+    29,
+    43,
+    71
+   ],
+   "pairing": "seed s of arm A with seed s of arm B",
+   "per_seed": "effect and paired patient-bootstrap interval for every seed",
+   "seed_mean": "mean of per-seed effects; interval from the same patient replicate applied to every seed (uncertainty over test patients conditional on the trained models)",
+   "across_seed": "SD (ddof 1), min, max, count of seeds with effect > 0, and t interval with n_seeds - 1 df (training-seed variability)",
+   "never": "seed predictions are never concatenated or counted as independent patients"
+  },
+  "decision_rule": "supported improvement only if the seed-mean patient interval excludes 0 in the favoured direction AND every seed's effect has that sign; otherwise inconclusive. A non-significant difference is not evidence of equivalence.",
+  "multiplicity": "one primary contrast (named in the S9 headline protocol before final evaluation); secondary contrasts and endpoints reported with Holm-adjusted p (p = 2 x min one-sided bootstrap tail) where an inferential claim is made"
+ },
+ "headline_v9": {
+  "question": "image-grounded report label completion (channel/04 latest decision entries; audit docs/reports/consult/20261031T1315_completion_dose_audit.md section D)",
+  "primary_endpoints": "per-finding positive recall AND F1 on the benchmark labels mapped (primary mapping tier, vocabulary crosswalk) to the completed heads (v9: on test sets DERIVED from the frozen R-all+complete manifest passed as --completion-manifest = heads with >= 1 qualified head/view; every contrast, co-primary and headline file of the family must carry the identical binding). v10: candidates = benchmark labels mapped to the completion-capable non-diagnosis heads ['cardiomegaly', 'pleural_effusion', 'airspace_opacity', 'edema', 'infiltrate', 'consolidation', 'pneumothorax'] (sets.*.primary_endpoint_candidates_v10); an endpoint = a candidate with >= 30 reference positives on that benchmark whose heads include a head qualified in the final manifest. The endpoint set is derived ENTIRELY from the final build (no hand-written list or exclusion). Every endpoint reports the per-view dose of its completed heads (manifest dose_by_head_view) and the benchmark's recorded views that got no completion (e.g. VinDr PA when a head completed on AP only). Both expert benchmarks contribute endpoints. Each endpoint is read with the v8 grounding reading (recall non-inferiority 0.02; F1 route also needs FPR non-inferiority 0.02; fewer-findings guard; 30/30 support gate).",
+  "mechanism_check_v11": "DESCRIPTIVE, label-free (coordinator decision on head-set audit finding 5a): for every arm on both test sets, the mention rate (stated at all) and positive-claim rate (positive or uncertain) of each sets.*.mechanism_labels_v11 label (the completed heads' labels, e.g. Edema), per seed and seed mean (swrd.eval.external mechanism, --final on test sets; reads no reference label). It answers whether completion changed how often the student claims the completed finding; no inference, never in the Holm family",
+  "harm_guard_v11": "GUARD (finding 5b): on every test set, each sets.*.harm_guards_v11 label (a completed head's label with 0 test positives; every positive claim is false, so its FPR is the false-claim rate; VinDr Edema for the pinned build) must be FPR NON-INFERIOR for R-all+complete vs R-all+random-additions with the protocol's existing margin (fpr_not_worse: seed-mean interval upper bound <= +0.02 and no seed above +0.02) at BOTH co-primary checkpoints (co-primary field harm_guard_v11.holds). Reported with the headline; a failed guard is reported as edema over-claiming on VinDr against the matched random control and must accompany any headline statement; it does not enter the Holm family",
+  "primary_endpoint_caveats": "sets.*.primary_endpoint_caveats_v11: pre-declared caveat per endpoint, copied into every contrast / co-primary file (v11; CheXpert test Edema: no view in the prompts, PA-only completion, a null is the expected reading)",
+  "view_stratified_reading": {
+   "declared": "v8, before any completion arm trained",
+   "rule": "every primary endpoint of every contrast is read (1) POOLED over the benchmark - this reading alone enters the endpoint verdict, co-primary rule, Holm family and headline_eligible - and (2) PER VIEW for each view in ['AP', 'PA'] that the benchmark records (sets.*.views): the same statistics and the same v8 grounding reading on that view's images only, with the same patient replicates (bootstrap counts of other-view images are zero). The 30/30 support gate applies per view (sets.*.views.readable). Per-view readings are reported next to the pooled reading and are never a separate headline family, never Holm-adjusted and never change a verdict.",
+   "per_benchmark": "VinDr test: view source = prompt (PA for all 3,000 images), so the PA reading is identical to the pooled reading by construction; CheXpert test: the benchmark records no view (pooled only); CheXpert val dev: AP/PA from val_labels.csv (pipeline checks)",
+   "prompt": "the view stays in the prompt for every arm (references, completion, controls, test-time); the comparison is like for like (channel/04 16:33 item 1a)"
+  },
+  "f1_route_fpr_noninferiority": "F1 route = recall non-inferior AND F1 rises AND the endpoint's FPR is non-inferior: seed-mean FPR-change interval upper bound <= +0.02 AND no seed's FPR change above +0.02 (channel/04 16:33 item 1b; review M7)",
+  "non_target_guard": "non-target macro recall must be non-inferior (seed-mean interval lower bound >= -0.02 and no seed below -0.02); if it is not, every primary endpoint read as improved is reported as 'blocked_non_target_recall_loss'",
+  "co_primary_checkpoints": "the selected checkpoint (lowest student_validation loss, ties earlier) and the final checkpoint (last update of the declared budget) are co-primary, because real-report validation loss penalises completion arms. An endpoint is 'supported' only if its reading is improved at BOTH checkpoints; improved at one only = 'checkpoint_dependent' (reported, not claimed)",
+  "primary_multiplicity": "v7 (unchanged in v8): the HEADLINE statement may cite only endpoints with headline_eligible = true (see headline_eligibility_v7); others are reported with unadjusted intervals as per-finding evidence",
+  "headline_eligibility_v7": "Holm across the whole primary family of the decisive contrast (every primary endpoint on both benchmarks). Endpoint test p at a checkpoint = seed-mean two-sided bootstrap p ((k+1)/(B+1)) of the route that made it improved (F1 route first, else FPR route; 1.0 if no route holds). Endpoint p = max over the selected and final checkpoints (intersection-union, matching the co-primary rule). headline_eligible = co-primary verdict 'supported' AND Holm p < 0.05 (swrd.eval.external headline)",
+  "secondary": "Holm-adjusted (two-sided seed-mean bootstrap p) across ['macro_f1', 'macro_recall', 'macro_precision', 'macro_fpr', 'macro_mention_rate', 'normal_false_claim_rate', 'mean_report_words', 'strict_sensitivity:macro_f1'] within each contrast, benchmark and checkpoint",
+  "arms": [
+   "R-all",
+   "R-all+complete",
+   "R-all+random-additions",
+   "R-all+test-time-completion",
+   "R-seed",
+   "R-seed+complete",
+   "R-seed+random-additions"
+  ],
+  "arms_dropped": {
+   "R-seed+paraphrase": "generator never built; dropped with a stated reason (channel/04 2026-10-31 14:27, dose audit decision E)"
+  },
+  "random_additions_control": "view-matched (channel/04 16:33 item 2): same addition counts per finding x view x fold as the matched completion arm, drawn from the same silent pool",
+  "contrasts": {
+   "decisive": "R-all+complete vs R-all",
+   "secondary": [
+    "R-all+complete vs R-all+random-additions",
+    "R-all+complete vs R-all+test-time-completion",
+    "R-all+test-time-completion vs R-all",
+    "R-seed+complete vs R-seed",
+    "R-seed+complete vs R-seed+random-additions"
+   ],
+   "note": "R-seed+complete is a dose measurement (audit D), not a headline result. The test-time contrasts answer 'is completion more than appending the classifier's output at inference' (review M3); they are secondary and read with the same rules"
+  },
+  "test_time_completion": {
+   "version": "test-time-completion-2",
+   "arm": "R-all+test-time-completion",
+   "module": "src/swrd/eval/test_time_completion.py (score-reader, apply, silence-agreement); hashed in code_sha256",
+   "runs": "final evaluation only (test sets need --final); R-all's selected and final checkpoint generations of every headline seed; then label / score / contrast like any arm",
+   "sentences": "swrd.v2.completion_arms.TEMPLATES (completion-template-1), frozen by templates_sha256 below; the R-all+complete manifest must carry the same templates_sha256",
+   "reader": "the frozen selection reader of the R-all+complete manifest (configs/readers.yaml seed_cls, refreeze ensemble A); fold checkpoints must equal the manifest's and the bundle's",
+   "fold": "pseudo_fold('<set>:<benchmark patient_id>', nfolds), salt swrd-s9-pseudo-fold-1 (one fold model, never the fold mean)",
+   "operating_points": "the final S7 TUNING bundle (argument --bundle; pending at freeze); the threshold of key '<fold>@<view>' (rule-5 view_operating_points); must equal the R-all+complete manifest's positive_points and tuning_bundle sha256",
+   "head_views": "exactly the R-all+complete manifest's completion.noise.qualified_head_views (rule-5 qualification incl. noise share); other head/views and images without a recorded AP/PA view are not completed; CheXpert test records no view, so this arm equals R-all there by construction and both test-time contrasts are informative on VinDr only (coordinator decision: strict, no pooled-point fallback)",
+   "silence": "test-time-silence-2: training silence logic (completion_arms.silence + Coverage of the manifest) on the Stage 1 infer_spans matcher's mentions of clean_text(prediction), generic-summary mentions excluded as in infer_spans.unclaimed_findings; only silent heads",
+   "text": "prediction.strip() + append_findings separator + sentences; empty prediction never completed (failed inference, counted); missing prediction stays missing (ITT)",
+   "generation_binding": "--gen must come from --rall-run at the --checkpoint step (selected: frozen lowest-validation-loss rule; final: the declared budget) and seed --seed; the run trained on the manifest's base (derived_from.dir) with max_steps = the manifest's training budget",
+   "template": "completion-template-1",
+   "templates": {
+    "cardiomegaly": "The heart is enlarged.",
+    "pleural_effusion": "There is a pleural effusion.",
+    "airspace_opacity": "There is airspace opacity.",
+    "edema": "There is pulmonary edema.",
+    "infiltrate": "There is a pulmonary infiltrate.",
+    "consolidation": "There is consolidation.",
+    "pneumothorax": "There is a pneumothorax."
+   },
+   "templates_sha256": "efdd8ea0b664d92ea1ed6a725431da1a58a22c21884055e40cca41de391b3230",
+   "required_completion_rule": null,
+   "decisive_arm": "R-all+complete",
+   "dependency_sha256": {
+    "src/swrd/v2/completion_arms.py": "a66ffe1493d7d9ac780ec0434939c950092f7126b2e855709bff7a3147f1159e",
+    "src/swrd/v2/fresh_scores.py": "907d27ca6569403aad19935db958e814b5c69df60505b6b4f312b791efe3c16b",
+    "src/swrd/v2/reader_transform.py": "27602c4bc9eec36d149ff952fef08e044c0bb87f8f21cdd089535274bb4b3834",
+    "src/swrd/v2/readers.py": "af886d1e15b87575bec9ed04d96192a62b112519379dd14e22f0688136a42c36",
+    "src/swrd/v2/infer_spans.py": "bec066b040707c534c02e54c10542a7094d0737b2350b6edf1aee9a267f53ff6",
+    "configs/infer_spans.yaml": "b099c64ef94f76799eb86748528d265819f51bdf9bfb062361c059b3ffe01e57"
+   }
+  },
+  "training_budget": {
+   "R-all arms": "2,000 optimizer updates",
+   "R-seed arms": "1,000 optimizer updates",
+   "R-all+test-time-completion": "no training: R-all's own selected / final checkpoint generations of each seed, completed at inference",
+   "seeds": [
+    29,
+    43,
+    71
+   ],
+   "global_batch": 64,
+   "checkpoints": "every 100 updates; selected and final both evaluated"
+  },
+  "status_v14": "family 1 is EMPTY in v14 (family_1_v14): the family-1 definitions of this section (primary endpoints, co-primary checkpoints, headline eligibility, the v11 harm guard / caveats derived from the gated build) apply to no endpoint; `headline` refuses. The confirmatory family is e2_v14; the test-time arm of this section is used only with --build e2_audit_free"
+ },
+ "model_rules": {
+  "checkpoint": "co-primary: lowest validation loss over the saved 100-step checkpoints (student_validation role only), ties to the earlier step, AND the final checkpoint of the declared budget (headline_v9.co_primary_checkpoints)",
+  "decoding": "swrd.eval.generate run: vLLM greedy (temperature 0), max_new_tokens 384, seed 0, thinking off, mm max_pixels 1048576 / min_pixels 4096, one shard; prompt = swrd.data.e1_sets.record (training prompt, views only, no indication)",
+  "no_tuning": "no mapping, threshold, semantics, checkpoint, decoding or prompt choice may use benchmark outcomes. Before the final evaluation of frozen headline models, no performance metric is computed on a test set: test-set outputs receive check-format only (completeness, parse success, label validity, mapping coverage; reference labels are not read). Pipeline checks with metrics use the development set (chexpert_val_dev) and student_validation"
+ },
+ "internal_heldout": {
+  "set": "ReXGradient S0 registry v2 role final_evaluation (6,797 patients / 9,977 studies); scored once, after headline models are frozen; student_validation serves checkpoint selection and pipeline checks",
+  "primary_metric": "the primary RadGraph F1 variant (metric + key) frozen by worker-S9 in docs/reports/S11/*_s11_metric_audit*; bound by that report's path and sha256 in an addendum before any final_evaluation scoring; never chosen from final_evaluation outcomes",
+  "metric_candidates_installed": [
+   "radgraph_radcliq (RadGraph-RadCliQ: per-report (entity F1 + relation F1)/2, original radgraph model)",
+   "radgraph (radgraph-xl F1RadGraph, simple / partial / complete reward levels)"
+  ],
+  "track": "findings",
+  "missing_policy": "itt_empty",
+  "statistics": "mean of per-report scores; patient-cluster bootstrap of the mean (resample patients, recompute); per-seed effects and seed-mean / across-seed summaries as above",
+  "complementary": [
+   "ratescore",
+   "green (kept if valid even when unfavourable)",
+   "bertscore",
+   "bleu",
+   "srrbert_sample_jaccard (not corpus weighted F1)"
+  ],
+  "report_derived_labels": "CheXbert on reference and generated reports: secondary, not an expert reference"
+ },
+ "exposure_disclosures": [
+  "v1 scored students on the CheXpert test and VinDr test (S0 exposure ledger 'v1 benchmark inspection'); v2 design changes driven by those v1 results must be disclosed",
+  "CheXpert validation labels set v1 reader thresholds; the development set is therefore exposed and never a result",
+  "Qwen3.5-4B pretraining corpora are undisclosed",
+  "3 of 3,000 VinDr images differ between the invalidated and the verified build; only the verified build is admissible",
+  "the completion head choice was informed by v1 results, which were scored once on both test sets (v1 exposure above); disclosed in the main text (channel/04 16:33 item 4)"
+ ]
+}

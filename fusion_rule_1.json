@@ -1,0 +1,1369 @@
+{
+ "version": "fusion-rule-1",
+ "status": "FROZEN on development data only (2026-11-10, worker-FIX2); not yet applied to any test set",
+ "module": "src/swrd/eval/fusion.py",
+ "module_sha256": "e5c506540ba295c19d627ff372dd13a431943518fdb2446c4c99307593c13eec",
+ "repair_module": "src/swrd/eval/constrained_fused.py",
+ "repair_module_sha256": "40efc53b41334f37ac34e3986f680c1fd0b65610ad13ac26529981daa91eff83",
+ "inputs": {
+  "dev_tags": "outputs/eval/sota_gen_20261104T0830Z/devtags_v5_wilson90",
+  "cls_config": "outputs/sota_cls/20261104T0830Z/configs_v5/e2e_raddino_merged_tta__site_wilson90__t22",
+  "selection_rule": "outputs/sota_cls/20261104T0830Z/selection_rule.json",
+  "selection_rule_sha256": "502a9b8a796516012eda088b46ecb811de95b3192c7554dea3028fb4d59edcc7",
+  "budgets": {
+   "chexpert_val": 0.1923,
+   "vindr_dev": 0.0386,
+   "rexgradient_val": 0.1359
+  },
+  "block_config": "configs/sota/tag_block_1.yaml",
+  "block_config_sha256": "600383f9ac5a3cf10d49aae34e58af78bb56640246cb5f348cb1a1a6d50713a5",
+  "matcher": "configs/sota/rule_matcher_1.yaml",
+  "matcher_sha256": "03e54213f7a87e63c1adaf4686c7c857a32a9331cb8a086aeac3738ad47ac285",
+  "settings": {
+   "logistic_C": 1.0,
+   "gen_states": 0.5,
+   "n_boot": 1000,
+   "seed": 0,
+   "fcr_bound": "wilson90"
+  },
+  "protocol_sha256": "82cd21e086c1824d24f8d1d5069053c1556bf0a99d525de8342798efbb6e5f0e"
+ },
+ "features": {
+  "p": "classifier calibrated probability (test: v15 Wilson-90 site tags of e2e_raddino_merged_tta)",
+  "gen_fraction": "fraction of the k=4 re-rank samples (configs/sota/rerank_1.yaml) asserting the finding, rule matcher configs/sota/rule_matcher_1.yaml; for a baseline: its single report (0/1)"
+ },
+ "logistic": "q = sigmoid(intercept + logit_p * logit(clip(p,1e-6)) + gen_fraction * g); status from q with thresholds_by_domain[domain] and the tag-block rule (present q>=t; uncertain odds(q)>=odds(t)/4; else absent)",
+ "simple": "present iff classifier present (site Wilson-90 threshold) AND (g >= gen_states_fraction OR p >= h_by_domain[domain][f]); h null = only with g; classifier-present but not stated -> uncertain; other statuses = the classifier's",
+ "domain_map_for_test": {
+  "chexpert_test": "chexpert_val",
+  "vindr_test": "vindr_dev",
+  "mimic_test": "rexgradient_val"
+ },
+ "pipeline": "SWRD: k=4 samples -> fusion select (re-rank against fused statuses, tie-break q) -> constrained_fused repair (template sentences v2.2.1, device heads unchanged) ; baselines: report -> constrained_fused repair",
+ "rules": {
+  "logistic:swrd_s29": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/logistic_swrd_s29/rule_full.json",
+   "source_sha256": "e275e6fe84f6478e46c97e7e3f717ed78bcb0ebd46b150b6f257b851e12af5f8",
+   "rule": "logistic",
+   "coefficients": {
+    "Enlarged Cardiomediastinum": {
+     "intercept": 2.7090321403321393,
+     "logit_p": 1.8724177158918571,
+     "gen_fraction": -0.01633170542578203,
+     "fit_rows": 1129,
+     "fit_positives": 125
+    },
+    "Cardiomegaly": {
+     "intercept": -0.09398734135491056,
+     "logit_p": 1.1735636617741587,
+     "gen_fraction": 0.8862590683767018,
+     "fit_rows": 4129,
+     "fit_positives": 549
+    },
+    "Lung Opacity": {
+     "intercept": -0.3131180351623578,
+     "logit_p": 1.0079482332228014,
+     "gen_fraction": 0.9155148363725886,
+     "fit_rows": 1129,
+     "fit_positives": 252
+    },
+    "Lung Lesion": {
+     "intercept": -0.3898448661293451,
+     "logit_p": 1.224276594718716,
+     "gen_fraction": 0.8023099012532627,
+     "fit_rows": 4129,
+     "fit_positives": 81
+    },
+    "Edema": {
+     "intercept": -0.021019958333401076,
+     "logit_p": 1.208963776209435,
+     "gen_fraction": -0.6552654665436115,
+     "fit_rows": 4129,
+     "fit_positives": 85
+    },
+    "Consolidation": {
+     "intercept": 0.9061089274981534,
+     "logit_p": 1.3618174835013463,
+     "gen_fraction": -0.032465456343435645,
+     "fit_rows": 4129,
+     "fit_positives": 71
+    },
+    "Pneumonia": {
+     "intercept": -0.5733021686046823,
+     "logit_p": 1.0407371947120019,
+     "gen_fraction": -0.5969338116998052,
+     "fit_rows": 4129,
+     "fit_positives": 130
+    },
+    "Atelectasis": {
+     "intercept": 0.1976421749522556,
+     "logit_p": 1.2323555771849632,
+     "gen_fraction": 0.01836959099717899,
+     "fit_rows": 4129,
+     "fit_positives": 189
+    },
+    "Pneumothorax": {
+     "intercept": -0.34388681719943004,
+     "logit_p": 1.0804765988383234,
+     "gen_fraction": -0.011154639629918885,
+     "fit_rows": 4129,
+     "fit_positives": 23
+    },
+    "Pleural Effusion": {
+     "intercept": -0.17143533528605726,
+     "logit_p": 1.047203300506981,
+     "gen_fraction": 0.4924354772054654,
+     "fit_rows": 4129,
+     "fit_positives": 250
+    },
+    "Fracture": {
+     "intercept": -0.43818611140925035,
+     "logit_p": 1.2154157630124012,
+     "gen_fraction": -0.16563925248710598,
+     "fit_rows": 4129,
+     "fit_positives": 28
+    },
+    "Support Devices": {
+     "intercept": -0.4505577837271759,
+     "logit_p": 0.9069440386874487,
+     "gen_fraction": 1.0992544433394837,
+     "fit_rows": 1129,
+     "fit_positives": 181
+    }
+   },
+   "thresholds_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.20549443593691358,
+     "Cardiomegaly": 0.19180763778786186,
+     "Lung Opacity": 0.5442210849657914,
+     "Lung Lesion": 0.3942661926917011,
+     "Edema": 0.15835439158684528,
+     "Consolidation": 0.13656752913111683,
+     "Pneumonia": 0.3325770331424269,
+     "Atelectasis": 0.1642321287078309,
+     "Pneumothorax": 0.11804532609036873,
+     "Pleural Effusion": 0.20822583782161314,
+     "Fracture": 0.10075933901389111,
+     "Support Devices": 0.3916015203648962,
+     "No Finding": 0.5582796931266785
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.20082667970400808,
+     "Cardiomegaly": 0.3840209335555606,
+     "Lung Opacity": 0.27230489865995006,
+     "Lung Lesion": 0.26115627338250386,
+     "Edema": 0.21756000948661314,
+     "Consolidation": 0.23873841285499195,
+     "Pneumonia": 0.15733184348121698,
+     "Atelectasis": 0.12977598294614784,
+     "Pneumothorax": 0.39770414031766466,
+     "Pleural Effusion": 0.3063764799639638,
+     "Fracture": 0.11524018734526621,
+     "Support Devices": 0.45108311760832703,
+     "No Finding": 0.5201665163040161
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.20059747484320142,
+     "Cardiomegaly": 0.3510687583210949,
+     "Lung Opacity": 0.2714607670627736,
+     "Lung Lesion": 0.08316085914383517,
+     "Edema": 0.2532934706296868,
+     "Consolidation": 0.11768159236658446,
+     "Pneumonia": 0.2059198836793238,
+     "Atelectasis": 0.3762449823627516,
+     "Pneumothorax": 0.374553590936236,
+     "Pleural Effusion": 0.48039484796970033,
+     "Fracture": 0.10075933901389111,
+     "Support Devices": 0.5990285702381893,
+     "No Finding": 0.40952393412590027
+    }
+   }
+  },
+  "logistic:swrd_s43": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/logistic_swrd_s43/rule_full.json",
+   "source_sha256": "5c4166c4621d726f7c908b87403492527de69a276ef73c53284a1704739d2d1c",
+   "rule": "logistic",
+   "coefficients": {
+    "Enlarged Cardiomediastinum": {
+     "intercept": 2.708887403973219,
+     "logit_p": 1.8723958608418643,
+     "gen_fraction": 0.04863528191991368,
+     "fit_rows": 1129,
+     "fit_positives": 125
+    },
+    "Cardiomegaly": {
+     "intercept": 0.05896386419583674,
+     "logit_p": 1.2439846271418324,
+     "gen_fraction": 0.06477283396077672,
+     "fit_rows": 4129,
+     "fit_positives": 549
+    },
+    "Lung Opacity": {
+     "intercept": -0.27806035390789097,
+     "logit_p": 1.0105197895740838,
+     "gen_fraction": 0.8997821576043642,
+     "fit_rows": 1129,
+     "fit_positives": 252
+    },
+    "Lung Lesion": {
+     "intercept": -0.5483171421144949,
+     "logit_p": 1.1700755903924402,
+     "gen_fraction": 1.3612473550567796,
+     "fit_rows": 4129,
+     "fit_positives": 81
+    },
+    "Edema": {
+     "intercept": -0.12823838850303837,
+     "logit_p": 1.172598757539788,
+     "gen_fraction": 0.037887201446223324,
+     "fit_rows": 4129,
+     "fit_positives": 85
+    },
+    "Consolidation": {
+     "intercept": 0.8467868839880737,
+     "logit_p": 1.3492229290258562,
+     "gen_fraction": 0.22679968288294722,
+     "fit_rows": 4129,
+     "fit_positives": 71
+    },
+    "Pneumonia": {
+     "intercept": -0.5167274390826319,
+     "logit_p": 1.0607877521545837,
+     "gen_fraction": -0.9958404810635905,
+     "fit_rows": 4129,
+     "fit_positives": 130
+    },
+    "Atelectasis": {
+     "intercept": 0.1099494298047035,
+     "logit_p": 1.2088587507909192,
+     "gen_fraction": 0.18960825156416247,
+     "fit_rows": 4129,
+     "fit_positives": 189
+    },
+    "Pneumothorax": {
+     "intercept": -0.8049625785796464,
+     "logit_p": 0.9837207988861185,
+     "gen_fraction": 0.858776175613109,
+     "fit_rows": 4129,
+     "fit_positives": 23
+    },
+    "Pleural Effusion": {
+     "intercept": -0.3766680194248856,
+     "logit_p": 0.9923658134790605,
+     "gen_fraction": 1.0044347610650342,
+     "fit_rows": 4129,
+     "fit_positives": 250
+    },
+    "Fracture": {
+     "intercept": -0.6833878970981793,
+     "logit_p": 1.1605531233474482,
+     "gen_fraction": 1.0281131712741731,
+     "fit_rows": 4129,
+     "fit_positives": 28
+    },
+    "Support Devices": {
+     "intercept": -0.6848195806020361,
+     "logit_p": 0.8504478850806654,
+     "gen_fraction": 1.496530085751603,
+     "fit_rows": 1129,
+     "fit_positives": 181
+    }
+   },
+   "thresholds_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.2054785453294701,
+     "Cardiomegaly": 0.1899404398173004,
+     "Lung Opacity": 0.4937902846860399,
+     "Lung Lesion": 0.35752220295333964,
+     "Edema": 0.15082747716896816,
+     "Consolidation": 0.13354838976320482,
+     "Pneumonia": 0.3798361599679365,
+     "Atelectasis": 0.16100756084478857,
+     "Pneumothorax": 0.10830637026563292,
+     "Pleural Effusion": 0.206611282647839,
+     "Fracture": 0.0851762488973778,
+     "Support Devices": 0.35717359573825236,
+     "No Finding": 0.5582796931266785
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.20081111283068243,
+     "Cardiomegaly": 0.4105606406721867,
+     "Lung Opacity": 0.25687435052033475,
+     "Lung Lesion": 0.30662109630059314,
+     "Edema": 0.21136276844727375,
+     "Consolidation": 0.258123962307767,
+     "Pneumonia": 0.13672193228502563,
+     "Atelectasis": 0.14029025062351871,
+     "Pneumothorax": 0.3922611591238051,
+     "Pleural Effusion": 0.3009685018206406,
+     "Fracture": 0.17236286788206306,
+     "Support Devices": 0.35717359573825236,
+     "No Finding": 0.5201665163040161
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.20058192395128174,
+     "Cardiomegaly": 0.3792770111126502,
+     "Lung Opacity": 0.25362382121301547,
+     "Lung Lesion": 0.0780150361207238,
+     "Edema": 0.3291765573877622,
+     "Consolidation": 0.11443127590762461,
+     "Pneumonia": 0.30361764109336514,
+     "Atelectasis": 0.3361097033055479,
+     "Pneumothorax": 0.40528521798120104,
+     "Pleural Effusion": 0.5014277652885036,
+     "Fracture": 0.0851762488973778,
+     "Support Devices": 0.6423394288623832,
+     "No Finding": 0.40952393412590027
+    }
+   }
+  },
+  "logistic:swrd_s71": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/logistic_swrd_s71/rule_full.json",
+   "source_sha256": "ab9954bd3b684f4ccd69c54b73a90dcaa5a4bab6f2a27762f00beb42972e52d1",
+   "rule": "logistic",
+   "coefficients": {
+    "Enlarged Cardiomediastinum": {
+     "intercept": 2.715780567876917,
+     "logit_p": 1.8753334602244043,
+     "gen_fraction": -0.30117783932254877,
+     "fit_rows": 1129,
+     "fit_positives": 125
+    },
+    "Cardiomegaly": {
+     "intercept": 0.036495957096642766,
+     "logit_p": 1.2340062801712202,
+     "gen_fraction": 0.2532657057553591,
+     "fit_rows": 4129,
+     "fit_positives": 549
+    },
+    "Lung Opacity": {
+     "intercept": -0.2916363325422152,
+     "logit_p": 0.9994110903930382,
+     "gen_fraction": 1.0310523349405887,
+     "fit_rows": 1129,
+     "fit_positives": 252
+    },
+    "Lung Lesion": {
+     "intercept": -0.292800245689783,
+     "logit_p": 1.255920439966468,
+     "gen_fraction": 0.7427648693887774,
+     "fit_rows": 4129,
+     "fit_positives": 81
+    },
+    "Edema": {
+     "intercept": -0.19118168243706876,
+     "logit_p": 1.1530279938402752,
+     "gen_fraction": 0.2952755692174845,
+     "fit_rows": 4129,
+     "fit_positives": 85
+    },
+    "Consolidation": {
+     "intercept": 0.870480520851881,
+     "logit_p": 1.3560376322585725,
+     "gen_fraction": 0.20547902510312765,
+     "fit_rows": 4129,
+     "fit_positives": 71
+    },
+    "Pneumonia": {
+     "intercept": -0.6574528378109031,
+     "logit_p": 1.0129855709117312,
+     "gen_fraction": -0.10509692508471104,
+     "fit_rows": 4129,
+     "fit_positives": 130
+    },
+    "Atelectasis": {
+     "intercept": 0.13113202294008883,
+     "logit_p": 1.2144351996541853,
+     "gen_fraction": 0.1844163365141233,
+     "fit_rows": 4129,
+     "fit_positives": 189
+    },
+    "Pneumothorax": {
+     "intercept": -0.8466448438346924,
+     "logit_p": 0.9770358741139938,
+     "gen_fraction": 1.1344086964052236,
+     "fit_rows": 4129,
+     "fit_positives": 23
+    },
+    "Pleural Effusion": {
+     "intercept": -0.16301060278088317,
+     "logit_p": 1.0479628078613852,
+     "gen_fraction": 0.5852727469262605,
+     "fit_rows": 4129,
+     "fit_positives": 250
+    },
+    "Fracture": {
+     "intercept": -0.474663286075198,
+     "logit_p": 1.2075478684135108,
+     "gen_fraction": 0.01961139817508397,
+     "fit_rows": 4129,
+     "fit_positives": 28
+    },
+    "Support Devices": {
+     "intercept": -0.207786619092126,
+     "logit_p": 0.9743754651816384,
+     "gen_fraction": 0.6157428523705202,
+     "fit_rows": 1129,
+     "fit_positives": 181
+    }
+   },
+   "thresholds_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.20556368360751726,
+     "Cardiomegaly": 0.18590800097841614,
+     "Lung Opacity": 0.38080208369315205,
+     "Lung Lesion": 0.41741541480594513,
+     "Edema": 0.14937780040799137,
+     "Consolidation": 0.1347064908860453,
+     "Pneumonia": 0.3470203519563153,
+     "Atelectasis": 0.18288113692445285,
+     "Pneumothorax": 0.2005103196549991,
+     "Pleural Effusion": 0.2133326883357509,
+     "Fracture": 0.09850382479027266,
+     "Support Devices": 0.37165768150824,
+     "No Finding": 0.5582796931266785
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.20088754395681957,
+     "Cardiomegaly": 0.4059478841556935,
+     "Lung Opacity": 0.2849240738195794,
+     "Lung Lesion": 0.27693295005720575,
+     "Edema": 0.20426667137139048,
+     "Consolidation": 0.22809272910949474,
+     "Pneumonia": 0.14919907626974627,
+     "Atelectasis": 0.22046504317113957,
+     "Pneumothorax": 0.5237658150773835,
+     "Pleural Effusion": 0.3130199785326692,
+     "Fracture": 0.11260374368923923,
+     "Support Devices": 0.41620232469065965,
+     "No Finding": 0.5201665163040161
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.20065793022474868,
+     "Cardiomegaly": 0.3825981085089648,
+     "Lung Opacity": 0.3588761970355639,
+     "Lung Lesion": 0.0866635404726035,
+     "Edema": 0.3295793367580932,
+     "Consolidation": 0.11529065481857846,
+     "Pneumonia": 0.23591899904126748,
+     "Atelectasis": 0.3578663574485804,
+     "Pneumothorax": 0.3954273167403758,
+     "Pleural Effusion": 0.5227577390755168,
+     "Fracture": 0.09850382479027266,
+     "Support Devices": 0.6560640080742132,
+     "No Finding": 0.40952393412590027
+    }
+   }
+  },
+  "logistic:llava_rad": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/logistic_llava_rad/rule_full.json",
+   "source_sha256": "c85395a6979e06067d836de03d2f85b4ad11a42037eef3d92863b4718b7a9309",
+   "rule": "logistic",
+   "coefficients": {
+    "Enlarged Cardiomediastinum": {
+     "intercept": 2.7095137682082124,
+     "logit_p": 1.873317121647239,
+     "gen_fraction": 0.4819570560588182,
+     "fit_rows": 1129,
+     "fit_positives": 125
+    },
+    "Cardiomegaly": {
+     "intercept": 0.03603241293508661,
+     "logit_p": 1.234931688474975,
+     "gen_fraction": 0.31780918447388584,
+     "fit_rows": 4129,
+     "fit_positives": 549
+    },
+    "Lung Opacity": {
+     "intercept": -0.12170274434863204,
+     "logit_p": 1.0656690990211153,
+     "gen_fraction": 0.634334085704683,
+     "fit_rows": 1129,
+     "fit_positives": 252
+    },
+    "Lung Lesion": {
+     "intercept": -0.5510753514916313,
+     "logit_p": 1.1917801082319628,
+     "gen_fraction": 1.2501506328742387,
+     "fit_rows": 4129,
+     "fit_positives": 81
+    },
+    "Edema": {
+     "intercept": -0.08453924660290693,
+     "logit_p": 1.184677120717951,
+     "gen_fraction": -0.13468651438499366,
+     "fit_rows": 4129,
+     "fit_positives": 85
+    },
+    "Consolidation": {
+     "intercept": 0.8666737021475073,
+     "logit_p": 1.3536493163118124,
+     "gen_fraction": 0.19669601962108527,
+     "fit_rows": 4129,
+     "fit_positives": 71
+    },
+    "Pneumonia": {
+     "intercept": -0.6282133139878947,
+     "logit_p": 1.0209914868274732,
+     "gen_fraction": -0.1537186981938859,
+     "fit_rows": 4129,
+     "fit_positives": 130
+    },
+    "Atelectasis": {
+     "intercept": 0.2019380311449184,
+     "logit_p": 1.2347100856746198,
+     "gen_fraction": 0.013913600358814573,
+     "fit_rows": 4129,
+     "fit_positives": 189
+    },
+    "Pneumothorax": {
+     "intercept": -0.7747175197966303,
+     "logit_p": 0.9978339883929664,
+     "gen_fraction": 0.969854341617484,
+     "fit_rows": 4129,
+     "fit_positives": 23
+    },
+    "Pleural Effusion": {
+     "intercept": -0.09127531579436317,
+     "logit_p": 1.0746454197449018,
+     "gen_fraction": 0.25672271155683946,
+     "fit_rows": 4129,
+     "fit_positives": 250
+    },
+    "Fracture": {
+     "intercept": -0.44896634248284595,
+     "logit_p": 1.2143121789356306,
+     "gen_fraction": -0.11575019116235133,
+     "fit_rows": 4129,
+     "fit_positives": 28
+    },
+    "Support Devices": {
+     "intercept": -0.13392941267231623,
+     "logit_p": 0.9989935317325684,
+     "gen_fraction": 0.4568189551799856,
+     "fit_rows": 1129,
+     "fit_positives": 181
+    }
+   },
+   "thresholds_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.20525466672748643,
+     "Cardiomegaly": 0.2012364193552408,
+     "Lung Opacity": 0.5757198318328638,
+     "Lung Lesion": 0.3567278986251313,
+     "Edema": 0.1543469426098197,
+     "Consolidation": 0.13482334810906585,
+     "Pneumonia": 0.35372093144753464,
+     "Atelectasis": 0.16626303828997088,
+     "Pneumothorax": 0.2825142072995768,
+     "Pleural Effusion": 0.19586580847386467,
+     "Fracture": 0.09992965037138082,
+     "Support Devices": 0.39516547099007815,
+     "No Finding": 0.5582796931266785
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.2005887607701867,
+     "Cardiomegaly": 0.4057606560150235,
+     "Lung Opacity": 0.2755283677962554,
+     "Lung Lesion": 0.2599501553698423,
+     "Edema": 0.2166539071899701,
+     "Consolidation": 0.23385795881191782,
+     "Pneumonia": 0.13093352248641993,
+     "Atelectasis": 0.12928904037634054,
+     "Pneumothorax": 0.3105720759410377,
+     "Pleural Effusion": 0.3744145056245287,
+     "Fracture": 0.11429257968946033,
+     "Support Devices": 0.49938672378532734,
+     "No Finding": 0.5201665163040161
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.2003596494183069,
+     "Cardiomegaly": 0.3748336478243215,
+     "Lung Opacity": 0.33057465651260776,
+     "Lung Lesion": 0.09675945495743767,
+     "Edema": 0.3069259914867167,
+     "Consolidation": 0.1370759662509671,
+     "Pneumonia": 0.2502885812578854,
+     "Atelectasis": 0.37477935858603045,
+     "Pneumothorax": 0.31372804464020093,
+     "Pleural Effusion": 0.4646767343097404,
+     "Fracture": 0.09992965037138082,
+     "Support Devices": 0.6736126503545379,
+     "No Finding": 0.40952393412590027
+    }
+   }
+  },
+  "logistic:maira2": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/logistic_maira2/rule_full.json",
+   "source_sha256": "b9e7c301167e63e2ad396b8ce3056304d1332317e8f39b0a92a4bd9673e20558",
+   "rule": "logistic",
+   "coefficients": {
+    "Enlarged Cardiomediastinum": {
+     "intercept": 2.7088190198771307,
+     "logit_p": 1.8723105252051486,
+     "gen_fraction": 0.0,
+     "fit_rows": 1129,
+     "fit_positives": 125
+    },
+    "Cardiomegaly": {
+     "intercept": -0.012814143162912009,
+     "logit_p": 1.2174181053852517,
+     "gen_fraction": 0.33610658492107587,
+     "fit_rows": 4129,
+     "fit_positives": 549
+    },
+    "Lung Opacity": {
+     "intercept": -0.29671868148919006,
+     "logit_p": 1.0347844140417963,
+     "gen_fraction": 0.9097358162395088,
+     "fit_rows": 1129,
+     "fit_positives": 252
+    },
+    "Lung Lesion": {
+     "intercept": -0.16633216758000238,
+     "logit_p": 1.2947526015051154,
+     "gen_fraction": 0.08275157472650595,
+     "fit_rows": 4129,
+     "fit_positives": 81
+    },
+    "Edema": {
+     "intercept": -0.3020074203121268,
+     "logit_p": 1.1340561518323822,
+     "gen_fraction": 0.9841071395554102,
+     "fit_rows": 4129,
+     "fit_positives": 85
+    },
+    "Consolidation": {
+     "intercept": 0.8412884911623388,
+     "logit_p": 1.3469877039304907,
+     "gen_fraction": 0.4776113441725985,
+     "fit_rows": 4129,
+     "fit_positives": 71
+    },
+    "Pneumonia": {
+     "intercept": -0.62177818636803,
+     "logit_p": 1.0200717265375083,
+     "gen_fraction": -0.3588115743984631,
+     "fit_rows": 4129,
+     "fit_positives": 130
+    },
+    "Atelectasis": {
+     "intercept": 0.024048746608722235,
+     "logit_p": 1.1953767629642926,
+     "gen_fraction": 0.39289004073427913,
+     "fit_rows": 4129,
+     "fit_positives": 189
+    },
+    "Pneumothorax": {
+     "intercept": -0.647160843208781,
+     "logit_p": 1.0168329031616705,
+     "gen_fraction": 0.7314069942791518,
+     "fit_rows": 4129,
+     "fit_positives": 23
+    },
+    "Pleural Effusion": {
+     "intercept": 0.053243356216244514,
+     "logit_p": 1.1121091695093752,
+     "gen_fraction": -0.07029816212106502,
+     "fit_rows": 4129,
+     "fit_positives": 250
+    },
+    "Fracture": {
+     "intercept": -0.8276948280281742,
+     "logit_p": 1.1314312551855528,
+     "gen_fraction": 1.0680287020987438,
+     "fit_rows": 4129,
+     "fit_positives": 28
+    },
+    "Support Devices": {
+     "intercept": -0.015852483496954915,
+     "logit_p": 1.0285297039072425,
+     "gen_fraction": 0.25439621606206364,
+     "fit_rows": 1129,
+     "fit_positives": 181
+    }
+   },
+   "thresholds_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.2054975999825435,
+     "Cardiomegaly": 0.17320565549531602,
+     "Lung Opacity": 0.601477173105887,
+     "Lung Lesion": 0.44814228567986825,
+     "Edema": 0.13595423249913413,
+     "Consolidation": 0.13004748786523684,
+     "Pneumonia": 0.35518813908869695,
+     "Atelectasis": 0.20258097709381767,
+     "Pneumothorax": 0.1423651372894746,
+     "Pleural Effusion": 0.21315280661446281,
+     "Fracture": 0.22283676061104166,
+     "Support Devices": 0.4131849960978138,
+     "No Finding": 0.5582796931266785
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.20083005497864176,
+     "Cardiomegaly": 0.3941400777496679,
+     "Lung Opacity": 0.2251726230374063,
+     "Lung Lesion": 0.29861971055675496,
+     "Edema": 0.22597853315734884,
+     "Consolidation": 0.21663487020274666,
+     "Pneumonia": 0.1289607952230007,
+     "Atelectasis": 0.16450718280722101,
+     "Pneumothorax": 0.5049768680663395,
+     "Pleural Effusion": 0.376613243416415,
+     "Fracture": 0.22283676061104166,
+     "Support Devices": 0.44728056451714104,
+     "No Finding": 0.5201665163040161
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.20060086034845284,
+     "Cardiomegaly": 0.3659212962995268,
+     "Lung Opacity": 0.4633422396776646,
+     "Lung Lesion": 0.09175710517737079,
+     "Edema": 0.2959839828520062,
+     "Consolidation": 0.11429657912906636,
+     "Pneumonia": 0.2843162490432218,
+     "Atelectasis": 0.3391867572455964,
+     "Pneumothorax": 0.4833114217323209,
+     "Pleural Effusion": 0.5499214790382738,
+     "Fracture": 0.066008340889796,
+     "Support Devices": 0.7211837792153881,
+     "No Finding": 0.40952393412590027
+    }
+   }
+  },
+  "logistic:chexagent": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/logistic_chexagent/rule_full.json",
+   "source_sha256": "99424f9f275a0b3634ef058541a3841b6c4c6f614580e0f283633ebb242140eb",
+   "rule": "logistic",
+   "coefficients": {
+    "Enlarged Cardiomediastinum": {
+     "intercept": 2.7161051976840938,
+     "logit_p": 1.874523271906174,
+     "gen_fraction": -0.28288059273200833,
+     "fit_rows": 1129,
+     "fit_positives": 125
+    },
+    "Cardiomegaly": {
+     "intercept": -0.23306922117921725,
+     "logit_p": 1.1576289525405508,
+     "gen_fraction": 0.7352193855411389,
+     "fit_rows": 4129,
+     "fit_positives": 549
+    },
+    "Lung Opacity": {
+     "intercept": -0.49006099628295446,
+     "logit_p": 0.9888902666077035,
+     "gen_fraction": 0.9901576779211437,
+     "fit_rows": 1129,
+     "fit_positives": 252
+    },
+    "Lung Lesion": {
+     "intercept": -0.7685127724054898,
+     "logit_p": 1.1138382748221907,
+     "gen_fraction": 1.5132045512474641,
+     "fit_rows": 4129,
+     "fit_positives": 81
+    },
+    "Edema": {
+     "intercept": -0.7056498093952702,
+     "logit_p": 1.0830581748198276,
+     "gen_fraction": 1.471273782693246,
+     "fit_rows": 4129,
+     "fit_positives": 85
+    },
+    "Consolidation": {
+     "intercept": 0.5355635500270798,
+     "logit_p": 1.2801375668038533,
+     "gen_fraction": 0.7902460446646119,
+     "fit_rows": 4129,
+     "fit_positives": 71
+    },
+    "Pneumonia": {
+     "intercept": -0.6523424931220007,
+     "logit_p": 1.011261497205968,
+     "gen_fraction": -0.4375611507448692,
+     "fit_rows": 4129,
+     "fit_positives": 130
+    },
+    "Atelectasis": {
+     "intercept": 0.1296372513007079,
+     "logit_p": 1.213619728992291,
+     "gen_fraction": 0.1939520972270609,
+     "fit_rows": 4129,
+     "fit_positives": 189
+    },
+    "Pneumothorax": {
+     "intercept": -0.9279256371097183,
+     "logit_p": 0.9694793852041524,
+     "gen_fraction": 0.9831820115355454,
+     "fit_rows": 4129,
+     "fit_positives": 23
+    },
+    "Pleural Effusion": {
+     "intercept": -0.6120421292064585,
+     "logit_p": 0.9776063211564625,
+     "gen_fraction": 1.0529005302486896,
+     "fit_rows": 4129,
+     "fit_positives": 250
+    },
+    "Fracture": {
+     "intercept": -1.2403238909961756,
+     "logit_p": 1.0302989387413983,
+     "gen_fraction": 1.877265042689514,
+     "fit_rows": 4129,
+     "fit_positives": 28
+    },
+    "Support Devices": {
+     "intercept": -0.3611037941416117,
+     "logit_p": 0.942425237186363,
+     "gen_fraction": 0.8090266641819283,
+     "fit_rows": 1129,
+     "fit_positives": 181
+    }
+   },
+   "thresholds_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.20590389020364272,
+     "Cardiomegaly": 0.16074144680096017,
+     "Lung Opacity": 0.5763079919868653,
+     "Lung Lesion": 0.3090610169713363,
+     "Edema": 0.19800372626033405,
+     "Consolidation": 0.11485725700517159,
+     "Pneumonia": 0.33473107389516815,
+     "Atelectasis": 0.18282113927753638,
+     "Pneumothorax": 0.2611740806430401,
+     "Pleural Effusion": 0.26826117133839356,
+     "Fracture": 0.09565648980754723,
+     "Support Devices": 0.37123164138718046,
+     "No Finding": 0.5582796931266785
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.20122397716457857,
+     "Cardiomegaly": 0.38236901711723337,
+     "Lung Opacity": 0.23044296366569364,
+     "Lung Lesion": 0.3357916084528373,
+     "Edema": 0.22360967545000995,
+     "Consolidation": 0.350689670278111,
+     "Pneumonia": 0.1511046815414109,
+     "Atelectasis": 0.14810010909907262,
+     "Pneumothorax": 0.287179697942021,
+     "Pleural Effusion": 0.46367608078621975,
+     "Fracture": 0.32751156063102255,
+     "Support Devices": 0.4681993010270265,
+     "No Finding": 0.5201665163040161
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.200994174891629,
+     "Cardiomegaly": 0.31095867775856684,
+     "Lung Opacity": 0.3894372051109366,
+     "Lung Lesion": 0.06930083879407746,
+     "Edema": 0.23073290177876485,
+     "Consolidation": 0.12443416998123094,
+     "Pneumonia": 0.2466174567495731,
+     "Atelectasis": 0.3701449213238634,
+     "Pneumothorax": 0.416770550731369,
+     "Pleural Effusion": 0.638803881552453,
+     "Fracture": 0.08839539768256562,
+     "Support Devices": 0.6281302512128133,
+     "No Finding": 0.40952393412590027
+    }
+   }
+  },
+  "logistic:medgemma": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/logistic_medgemma/rule_full.json",
+   "source_sha256": "5c3cb66b2b7fb0f3263b0a7bf29b4e355b85238eed66e70c71e2d1051d86faa4",
+   "rule": "logistic",
+   "coefficients": {
+    "Enlarged Cardiomediastinum": {
+     "intercept": 2.6980770352463024,
+     "logit_p": 1.8690561640906098,
+     "gen_fraction": 0.45212114510330575,
+     "fit_rows": 1129,
+     "fit_positives": 125
+    },
+    "Cardiomegaly": {
+     "intercept": -0.11466447868706639,
+     "logit_p": 1.199118108304648,
+     "gen_fraction": 0.6562507491414015,
+     "fit_rows": 4129,
+     "fit_positives": 549
+    },
+    "Lung Opacity": {
+     "intercept": -0.04054656615283534,
+     "logit_p": 1.1188963441307176,
+     "gen_fraction": 0.42762011065117966,
+     "fit_rows": 1129,
+     "fit_positives": 252
+    },
+    "Lung Lesion": {
+     "intercept": -0.19050197512438677,
+     "logit_p": 1.2932190757834405,
+     "gen_fraction": 0.08994613169986951,
+     "fit_rows": 4129,
+     "fit_positives": 81
+    },
+    "Edema": {
+     "intercept": -0.2464598907769057,
+     "logit_p": 1.1491676408400784,
+     "gen_fraction": 0.2026943353742141,
+     "fit_rows": 4129,
+     "fit_positives": 85
+    },
+    "Consolidation": {
+     "intercept": 0.690612371142777,
+     "logit_p": 1.3280032981671326,
+     "gen_fraction": 0.39575023237055407,
+     "fit_rows": 4129,
+     "fit_positives": 71
+    },
+    "Pneumonia": {
+     "intercept": -1.4335333167679534,
+     "logit_p": 0.8797069814998899,
+     "gen_fraction": 0.995632899833295,
+     "fit_rows": 4129,
+     "fit_positives": 130
+    },
+    "Atelectasis": {
+     "intercept": 0.09791911227449208,
+     "logit_p": 1.2230608954723607,
+     "gen_fraction": 0.24103108260759867,
+     "fit_rows": 4129,
+     "fit_positives": 189
+    },
+    "Pneumothorax": {
+     "intercept": 0.049845496292958334,
+     "logit_p": 1.1652895229757518,
+     "gen_fraction": -1.2968777738650314,
+     "fit_rows": 4129,
+     "fit_positives": 23
+    },
+    "Pleural Effusion": {
+     "intercept": -0.15602567909754236,
+     "logit_p": 1.0656760714357885,
+     "gen_fraction": 0.3983963548548212,
+     "fit_rows": 4129,
+     "fit_positives": 250
+    },
+    "Fracture": {
+     "intercept": -0.4642130749011922,
+     "logit_p": 1.2105345145402364,
+     "gen_fraction": -0.05797817558768358,
+     "fit_rows": 4129,
+     "fit_positives": 28
+    },
+    "Support Devices": {
+     "intercept": -0.1328513546613488,
+     "logit_p": 1.0250992104986174,
+     "gen_fraction": 0.3232908503067134,
+     "fit_rows": 1129,
+     "fit_positives": 181
+    }
+   },
+   "thresholds_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.2048969067765523,
+     "Cardiomegaly": 0.2344337224982364,
+     "Lung Opacity": 0.4357791805964805,
+     "Lung Lesion": 0.44218483018308663,
+     "Edema": 0.15777736637149387,
+     "Consolidation": 0.13562139710894724,
+     "Pneumonia": 0.3974892640715268,
+     "Atelectasis": 0.22456856143640258,
+     "Pneumothorax": 0.1696285616338024,
+     "Pleural Effusion": 0.18241458022307952,
+     "Fracture": 0.09905115552169089,
+     "Support Devices": 0.46421006385735264,
+     "No Finding": 0.5582796931266785
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.20024759276789436,
+     "Cardiomegaly": 0.3826619536023457,
+     "Lung Opacity": 0.23745856068783414,
+     "Lung Lesion": 0.2937511220740656,
+     "Edema": 0.18557146542661015,
+     "Consolidation": 0.28331790327710593,
+     "Pneumonia": 0.17054302366690363,
+     "Atelectasis": 0.22256720290511559,
+     "Pneumothorax": 0.49402883042665446,
+     "Pleural Effusion": 0.33618358634539436,
+     "Fracture": 0.1132567208176572,
+     "Support Devices": 0.46421006385735264,
+     "No Finding": 0.5201665163040161
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.20001929383381548,
+     "Cardiomegaly": 0.5008340622964433,
+     "Lung Opacity": 0.2453719689972784,
+     "Lung Lesion": 0.08996858054210163,
+     "Edema": 0.35074278746219745,
+     "Consolidation": 0.13135584924290808,
+     "Pneumonia": 0.2363882569885007,
+     "Atelectasis": 0.3569111494059791,
+     "Pneumothorax": 0.4692315970632533,
+     "Pleural Effusion": 0.5946780751511341,
+     "Fracture": 0.09905115552169089,
+     "Support Devices": 0.6963802368495793,
+     "No Finding": 0.40952393412590027
+    }
+   }
+  },
+  "simple:swrd_s29": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/simple_swrd_s29/rule_full.json",
+   "source_sha256": "79ba724d2da76142043901bff466bdca0e0deb7b348fa872cc9125c89c719b96",
+   "rule": "simple",
+   "h_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.1011573076248169,
+     "Cardiomegaly": 0.29084086418151855,
+     "Lung Opacity": 0.3119068443775177,
+     "Lung Lesion": null,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.1284513771533966,
+     "Pneumonia": 0.5896303057670593,
+     "Atelectasis": 0.25099965929985046,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.3561861515045166,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.5366620421409607
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.10381215810775757,
+     "Cardiomegaly": 0.4247697591781616,
+     "Lung Opacity": 0.34658461809158325,
+     "Lung Lesion": 0.4181183874607086,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.27707985043525696,
+     "Pneumonia": 0.29349592328071594,
+     "Atelectasis": 0.2560938000679016,
+     "Pneumothorax": 0.5232610702514648,
+     "Pleural Effusion": 0.42211756110191345,
+     "Fracture": null,
+     "Support Devices": 0.5366620421409607
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.1105688214302063,
+     "Cardiomegaly": 0.4514903426170349,
+     "Lung Opacity": 0.3957377076148987,
+     "Lung Lesion": 0.19593307375907898,
+     "Edema": 0.4047175943851471,
+     "Consolidation": 0.10482826083898544,
+     "Pneumonia": 0.8393770456314087,
+     "Atelectasis": 0.374725878238678,
+     "Pneumothorax": null,
+     "Pleural Effusion": null,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.741507887840271
+    }
+   },
+   "gen_states_fraction": 0.5,
+   "classifier_thresholds": "the classifier's site Wilson-90 thresholds of the test look (CLS config site_thresholds_full)"
+  },
+  "simple:swrd_s43": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/simple_swrd_s43/rule_full.json",
+   "source_sha256": "1dec0b567e796a195cc19766136bf5c9d788f0d36f71bc78d66a6512987f95e9",
+   "rule": "simple",
+   "h_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.1011573076248169,
+     "Cardiomegaly": 0.3342701196670532,
+     "Lung Opacity": 0.2933766543865204,
+     "Lung Lesion": null,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.1284513771533966,
+     "Pneumonia": 0.5896303057670593,
+     "Atelectasis": 0.25099965929985046,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.421657919883728,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.9660260081291199
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.10381215810775757,
+     "Cardiomegaly": 0.4247697591781616,
+     "Lung Opacity": 0.3567483723163605,
+     "Lung Lesion": 0.5561926960945129,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.27707985043525696,
+     "Pneumonia": 0.27956992387771606,
+     "Atelectasis": 0.2560938000679016,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.42211756110191345,
+     "Fracture": null,
+     "Support Devices": 0.741507887840271
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.1105688214302063,
+     "Cardiomegaly": 0.43161919713020325,
+     "Lung Opacity": 0.36635082960128784,
+     "Lung Lesion": 0.19593307375907898,
+     "Edema": 0.37806710600852966,
+     "Consolidation": 0.19156399369239807,
+     "Pneumonia": 0.8393770456314087,
+     "Atelectasis": 0.374725878238678,
+     "Pneumothorax": null,
+     "Pleural Effusion": null,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.741507887840271
+    }
+   },
+   "gen_states_fraction": 0.5,
+   "classifier_thresholds": "the classifier's site Wilson-90 thresholds of the test look (CLS config site_thresholds_full)"
+  },
+  "simple:swrd_s71": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/simple_swrd_s71/rule_full.json",
+   "source_sha256": "ad92c1b2e3de1346196e4db03c5fb24e42e3bbb2d231175d1752caa3ea24ad81",
+   "rule": "simple",
+   "h_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.1011573076248169,
+     "Cardiomegaly": 0.2839304506778717,
+     "Lung Opacity": 0.29176753759384155,
+     "Lung Lesion": null,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.1284513771533966,
+     "Pneumonia": 0.5896303057670593,
+     "Atelectasis": 0.25099965929985046,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.3561861515045166,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.42751067876815796
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.10381215810775757,
+     "Cardiomegaly": 0.4247697591781616,
+     "Lung Opacity": 0.5361338257789612,
+     "Lung Lesion": 0.4181183874607086,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.27707985043525696,
+     "Pneumonia": 0.27956992387771606,
+     "Atelectasis": 0.2560938000679016,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.4327634274959564,
+     "Fracture": null,
+     "Support Devices": 0.44454342126846313
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.1105688214302063,
+     "Cardiomegaly": 0.4720829427242279,
+     "Lung Opacity": 0.5361338257789612,
+     "Lung Lesion": 0.19593307375907898,
+     "Edema": 0.3893516957759857,
+     "Consolidation": 0.10482826083898544,
+     "Pneumonia": 0.8393770456314087,
+     "Atelectasis": 0.4156143069267273,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.7355371117591858,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.741507887840271
+    }
+   },
+   "gen_states_fraction": 0.5,
+   "classifier_thresholds": "the classifier's site Wilson-90 thresholds of the test look (CLS config site_thresholds_full)"
+  },
+  "simple:llava_rad": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/simple_llava_rad/rule_full.json",
+   "source_sha256": "505f1f28bd4b587dd958d523dac16b38efb62b8a415d03abf4b917ba9470d5c6",
+   "rule": "simple",
+   "h_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.1011573076248169,
+     "Cardiomegaly": 0.27763423323631287,
+     "Lung Opacity": 0.2933766543865204,
+     "Lung Lesion": null,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.1284513771533966,
+     "Pneumonia": 0.5896303057670593,
+     "Atelectasis": 0.25099965929985046,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.5219888091087341,
+     "Fracture": 0.30073708295822144,
+     "Support Devices": 0.42751067876815796
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.10381215810775757,
+     "Cardiomegaly": 0.4247697591781616,
+     "Lung Opacity": 0.34118950366973877,
+     "Lung Lesion": 0.4181183874607086,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.27707985043525696,
+     "Pneumonia": 0.29349592328071594,
+     "Atelectasis": 0.2560938000679016,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.6010098457336426,
+     "Fracture": 0.23040735721588135,
+     "Support Devices": 0.44454342126846313
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.1105688214302063,
+     "Cardiomegaly": 0.41206803917884827,
+     "Lung Opacity": 0.37548574805259705,
+     "Lung Lesion": 0.26309457421302795,
+     "Edema": 0.4047175943851471,
+     "Consolidation": 0.14547577500343323,
+     "Pneumonia": 0.7784317135810852,
+     "Atelectasis": 0.374725878238678,
+     "Pneumothorax": 0.49798816442489624,
+     "Pleural Effusion": 0.7236281633377075,
+     "Fracture": 0.3049924969673157,
+     "Support Devices": 0.7332869172096252
+    }
+   },
+   "gen_states_fraction": 0.5,
+   "classifier_thresholds": "the classifier's site Wilson-90 thresholds of the test look (CLS config site_thresholds_full)"
+  },
+  "simple:maira2": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/simple_maira2/rule_full.json",
+   "source_sha256": "cff81f8c7c0e716cbe4cce3a9599206fc7f8b6aabcedc85014271411f4221dc1",
+   "rule": "simple",
+   "h_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.1011573076248169,
+     "Cardiomegaly": 0.2839304506778717,
+     "Lung Opacity": 0.29176753759384155,
+     "Lung Lesion": null,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.1284513771533966,
+     "Pneumonia": 0.5896303057670593,
+     "Atelectasis": 0.1890036016702652,
+     "Pneumothorax": 0.3194456100463867,
+     "Pleural Effusion": 0.3414141833782196,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.4525481164455414
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.10381215810775757,
+     "Cardiomegaly": 0.4247697591781616,
+     "Lung Opacity": 0.5043427348136902,
+     "Lung Lesion": 0.4181183874607086,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.27707985043525696,
+     "Pneumonia": 0.28394046425819397,
+     "Atelectasis": 0.2620731294155121,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.4327634274959564,
+     "Fracture": null,
+     "Support Devices": 0.4525481164455414
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.1105688214302063,
+     "Cardiomegaly": 0.4994603991508484,
+     "Lung Opacity": 0.5361338257789612,
+     "Lung Lesion": 0.19593307375907898,
+     "Edema": 0.37806710600852966,
+     "Consolidation": 0.10482826083898544,
+     "Pneumonia": 0.7784317135810852,
+     "Atelectasis": 0.374725878238678,
+     "Pneumothorax": 0.6480580568313599,
+     "Pleural Effusion": 0.7236281633377075,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.8316060304641724
+    }
+   },
+   "gen_states_fraction": 0.5,
+   "classifier_thresholds": "the classifier's site Wilson-90 thresholds of the test look (CLS config site_thresholds_full)"
+  },
+  "simple:chexagent": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/simple_chexagent/rule_full.json",
+   "source_sha256": "744590eca97d18313614666933e3f8be8594e936f79bf3148a8a828e08e824a0",
+   "rule": "simple",
+   "h_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.1011573076248169,
+     "Cardiomegaly": 0.2839304506778717,
+     "Lung Opacity": 0.32573533058166504,
+     "Lung Lesion": null,
+     "Edema": 0.2521236836910248,
+     "Consolidation": 0.13661041855812073,
+     "Pneumonia": 0.6029165387153625,
+     "Atelectasis": 0.21580906212329865,
+     "Pneumothorax": null,
+     "Pleural Effusion": 0.4408739507198334,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.5616861581802368
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.10381215810775757,
+     "Cardiomegaly": 0.7305150628089905,
+     "Lung Opacity": 0.40549299120903015,
+     "Lung Lesion": 0.4181183874607086,
+     "Edema": 0.2521236836910248,
+     "Consolidation": null,
+     "Pneumonia": 0.27956992387771606,
+     "Atelectasis": 0.2560938000679016,
+     "Pneumothorax": 0.5232610702514648,
+     "Pleural Effusion": 0.7117834687232971,
+     "Fracture": null,
+     "Support Devices": 0.5616861581802368
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.1105688214302063,
+     "Cardiomegaly": 0.4514903426170349,
+     "Lung Opacity": 0.5422239899635315,
+     "Lung Lesion": 0.19593307375907898,
+     "Edema": 0.4196632504463196,
+     "Consolidation": 0.09723979234695435,
+     "Pneumonia": 0.7784317135810852,
+     "Atelectasis": 0.374725878238678,
+     "Pneumothorax": 0.6480580568313599,
+     "Pleural Effusion": 0.931908369064331,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.793680727481842
+    }
+   },
+   "gen_states_fraction": 0.5,
+   "classifier_thresholds": "the classifier's site Wilson-90 thresholds of the test look (CLS config site_thresholds_full)"
+  },
+  "simple:medgemma": {
+   "source": "outputs/eval/fix2_fusion_20261110T0640Z/fits/simple_medgemma/rule_full.json",
+   "source_sha256": "ace83b4cf68763e5fd400b7bda7e70afc1d713fcc861565b5623eec761626286",
+   "rule": "simple",
+   "h_by_domain": {
+    "chexpert_val": {
+     "Enlarged Cardiomediastinum": 0.1011573076248169,
+     "Cardiomegaly": 0.3342701196670532,
+     "Lung Opacity": 0.2478242665529251,
+     "Lung Lesion": null,
+     "Edema": 0.26975956559181213,
+     "Consolidation": 0.18531984090805054,
+     "Pneumonia": 0.5896303057670593,
+     "Atelectasis": 0.25099965929985046,
+     "Pneumothorax": 0.25083091855049133,
+     "Pleural Effusion": 0.3769427537918091,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.9378489851951599
+    },
+    "vindr_dev": {
+     "Enlarged Cardiomediastinum": 0.10381215810775757,
+     "Cardiomegaly": 0.4274502694606781,
+     "Lung Opacity": 0.2478242665529251,
+     "Lung Lesion": 0.5193843841552734,
+     "Edema": 0.26975956559181213,
+     "Consolidation": 0.23968736827373505,
+     "Pneumonia": 0.44057291746139526,
+     "Atelectasis": null,
+     "Pneumothorax": 0.5232610702514648,
+     "Pleural Effusion": 0.4327634274959564,
+     "Fracture": 0.23040735721588135,
+     "Support Devices": 0.5812791585922241
+    },
+    "rexgradient_val": {
+     "Enlarged Cardiomediastinum": 0.11784131079912186,
+     "Cardiomegaly": 0.5669850707054138,
+     "Lung Opacity": 0.36635082960128784,
+     "Lung Lesion": 0.19593307375907898,
+     "Edema": 0.49743974208831787,
+     "Consolidation": 0.09723979234695435,
+     "Pneumonia": null,
+     "Atelectasis": 0.3593849539756775,
+     "Pneumothorax": 0.49798816442489624,
+     "Pleural Effusion": 0.7236281633377075,
+     "Fracture": 0.27358007431030273,
+     "Support Devices": 0.8707705140113831
+    }
+   },
+   "gen_states_fraction": 0.5,
+   "classifier_thresholds": "the classifier's site Wilson-90 thresholds of the test look (CLS config site_thresholds_full)"
+  }
+ },
+ "created_utc": "2026-11-10T07:29:48Z"
+}
