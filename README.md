@@ -18,6 +18,7 @@ records and no model weights.
 | `20261111T0504_v16_pin_addendum.json` | `21da4bf5e891e3e14ec23dd3fd67288345b82a0d0cd54a2b8a6a38f30ccbc12e` | v16 pin addendum: hashes of the code written after the v16 freeze (2026-11-11 05:04 UTC) |
 | `20261111T0505_v16_generator_choice.json` | `db66b2b86917c9fdae19cc26f9062f0721aa0b47a01552ca6edb17282ba87495` | Frozen generator choice, made mechanically on development data by the v16 selection rule: the v15 generator is kept (the retrained generator's selection metric, 0.4331, is not greater than 0.4367) |
 | `20261111T0640_v16_generation_record.json` | `60d34f0ddb62af0b87ca02f13928ab3edfef467ed11419075b865e11b6c29aae` | Seal of the 45 v16 test generation directories (hashes of every generated-report file), made before any v16 score was computed |
+| `20261111T0640_v16_decision.json` | `934bb17ebf9e93aff6fec97efaa88c1ea80d01b5ae54a1be2d4d6c1c5c27ca13` | Outcome of the v16 pre-declared decision: met on none of the three benchmarks |
 
 ## Status before the second look
 
