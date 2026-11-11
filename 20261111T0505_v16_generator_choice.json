@@ -1,0 +1,207 @@
+{
+ "version": "v16-generator-choice-1",
+ "v16": "docs/reports/S11/20261110T2140_s11_external_eval_protocol_v16.json",
+ "v16_sha256": "f5e91838c80b16113a1e25352b32f34239fbaec76ca4f7dd2ca943b833132c83",
+ "addendum_sha256": "21da4bf5e891e3e14ec23dd3fd67288345b82a0d0cd54a2b8a6a38f30ccbc12e",
+ "dry_run": false,
+ "choice": "v15_generator",
+ "reason": "fix1_generator selection metric not greater",
+ "rule": "SELECT fix1_generator IFF (a) its selection metric is strictly greater than v15_generator's AND (b) fix1_generator is eligible; OTHERWISE v15_generator. Both candidates are evaluated with the fusion rule (simple), re-ranked k = 4 + fused repair, 3-seed mean, on the dev sets only.",
+ "tie_break": "a tie (equal float64 point values) keeps v15_generator: fix1_generator must be strictly better",
+ "candidates": {
+  "v15_generator": {
+   "selection_metric": 0.43674393999207906,
+   "selection_ci95": [
+    0.3987756351538031,
+    0.46426214800896853
+   ],
+   "selection_3set": 0.510390864202423,
+   "selection_per_seed": [
+    0.43281038314727954,
+    0.43845392378073483,
+    0.4389675130482228
+   ],
+   "fcr_chexbert": {
+    "chexpert_val_dev": 0.12820512820512822,
+    "vindr_train_dev": 0.007835762419683435,
+    "rexgradient_val": 0.062360801781737196
+   },
+   "fcr_srrbert": {
+    "chexpert_val_dev": 0.11538461538461538,
+    "vindr_train_dev": 0.00861933866165178,
+    "rexgradient_val": 0.10352303523035232
+   },
+   "eligible": true,
+   "eligible_by_set": {
+    "chexpert_val_dev": true,
+    "vindr_train_dev": true,
+    "rexgradient_val": true
+   },
+   "eligible_per_labeller_reading": true,
+   "macros": {
+    "chexpert_val_dev": {
+     "cx_macro": 0.7184288759132267,
+     "srr_macro": 0.6574942401226798,
+     "cx_pos": 0.6934451462070469,
+     "srr_pos": 0.6219242790391748
+    },
+    "vindr_train_dev": {
+     "cx_macro": 0.4668837592340334,
+     "srr_macro": 0.47294876393800495,
+     "cx_pos": 0.46439928326647495,
+     "srr_pos": 0.46154465125235755
+    },
+    "rexgradient_val": {
+     "cx_macro": 0.41675455133957656,
+     "srr_macro": 0.4716018299552851,
+     "cx_pos": 0.38855155938940394,
+     "srr_pos": 0.4324802660600797
+    }
+   }
+  },
+  "fix1_generator": {
+   "selection_metric": 0.4331019467723108,
+   "selection_ci95": [
+    0.39556471996433606,
+    0.46023796433556985
+   ],
+   "selection_3set": 0.5181477424046349,
+   "selection_per_seed": [
+    0.4251940456683799,
+    0.44044179420726903,
+    0.43367000044128334
+   ],
+   "fcr_chexbert": {
+    "chexpert_val_dev": 0.16666666666666666,
+    "vindr_train_dev": 0.010029775897194797,
+    "rexgradient_val": 0.07646622123236822
+   },
+   "fcr_srrbert": {
+    "chexpert_val_dev": 0.16666666666666666,
+    "vindr_train_dev": 0.01081335213916314,
+    "rexgradient_val": 0.11382113821138211
+   },
+   "eligible": true,
+   "eligible_by_set": {
+    "chexpert_val_dev": true,
+    "vindr_train_dev": true,
+    "rexgradient_val": true
+   },
+   "eligible_per_labeller_reading": true,
+   "macros": {
+    "chexpert_val_dev": {
+     "cx_macro": 0.737992833680893,
+     "srr_macro": 0.6649184389244334,
+     "cx_pos": 0.7308274917868722,
+     "srr_pos": 0.6456511755516942
+    },
+    "vindr_train_dev": {
+     "cx_macro": 0.4680927235863331,
+     "srr_macro": 0.4660323627185042,
+     "cx_pos": 0.4628268741256161,
+     "srr_pos": 0.4589979632269221
+    },
+    "rexgradient_val": {
+     "cx_macro": 0.41304925459510594,
+     "srr_macro": 0.45158541113972755,
+     "cx_pos": 0.38545313992827235,
+     "srr_pos": 0.4251298098084326
+    }
+   }
+  }
+ },
+ "caps_chexbert": {
+  "chexpert_val_dev": 0.19230769230769232,
+  "vindr_train_dev": 0.038551951104842504,
+  "rexgradient_val": 0.1358574610244989
+ },
+ "caps_srrbert_reading": {
+  "chexpert_val_dev": 0.19230769230769232,
+  "vindr_train_dev": 0.0404,
+  "rexgradient_val": 0.1675
+ },
+ "difference_fix1_minus_v15": {
+  "value": -0.003641993219768269,
+  "ci95": [
+   -0.01789218047113406,
+   0.010635752627362305
+  ],
+  "undefined_replicates": 0,
+  "p_le0": 0.6825
+ },
+ "gate": {
+  "chexpert_test": {
+   "dev_set": "chexpert_val_dev",
+   "chexbert_macro": 0.7184288759132267,
+   "srrbert_macro": 0.6574942401226798,
+   "comparator_chexbert_macro": 0.5532777158656645,
+   "comparator_srrbert_macro": 0.5632438568982833,
+   "passes": true
+  },
+  "vindr_test": {
+   "dev_set": "vindr_train_dev",
+   "chexbert_macro": 0.4668837592340334,
+   "srrbert_macro": 0.47294876393800495,
+   "comparator_chexbert_macro": 0.35856406654977674,
+   "comparator_srrbert_macro": 0.397690614579895,
+   "passes": true
+  },
+  "mimic_test": {
+   "dev_set": "rexgradient_val",
+   "chexbert_macro": 0.41675455133957656,
+   "srrbert_macro": 0.4716018299552851,
+   "comparator_chexbert_macro": 0.3102817740628369,
+   "comparator_srrbert_macro": 0.3744238386511482,
+   "passes": true
+  }
+ },
+ "chosen": {
+  "name": "v15_generator",
+  "runs": {
+   "29": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s29/checkpoint-2000",
+   "43": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s43/checkpoint-2000",
+   "71": "outputs/runs/v2_SOTA_9b_R_all_v8_tagse2e_status_prob_2000u_s71/checkpoint-2000"
+  },
+  "run_dir_tree_sha256": {
+   "29": "0e6121502c268a8cd419009cf1650fb41bc2c1a0ed769fb896033e5780d2add6",
+   "43": "aff1cd8a9d8b7222c3cca082fdbbc90665ff1654a27be290ad537c8a240cb22c",
+   "71": "2e5ef8ffb89c6663af751b4c46c2df20068198b7548ae4dd3ea72f123d0c6fa7"
+  },
+  "fusion_rules": {
+   "29": {
+    "path": "outputs/eval/fix2_fusion_20261110T0640Z/frozen/fusion_rule_1.json",
+    "key": "simple:swrd_s29",
+    "sha256": "dfa107df5c7b26c03791a58cfe5218baeaef7160419c29da3c145b59675ae4cb"
+   },
+   "43": {
+    "path": "outputs/eval/fix2_fusion_20261110T0640Z/frozen/fusion_rule_1.json",
+    "key": "simple:swrd_s43",
+    "sha256": "dfa107df5c7b26c03791a58cfe5218baeaef7160419c29da3c145b59675ae4cb"
+   },
+   "71": {
+    "path": "outputs/eval/fix2_fusion_20261110T0640Z/frozen/fusion_rule_1.json",
+    "key": "simple:swrd_s71",
+    "sha256": "dfa107df5c7b26c03791a58cfe5218baeaef7160419c29da3c145b59675ae4cb"
+   }
+  },
+  "tag_block": {
+   "config": "configs/sota/tag_block_1.yaml",
+   "variant": "status_prob",
+   "code": "src/swrd/sota/tags.py"
+  }
+ },
+ "paired_suite": {
+  "path": "outputs/eval/v16_choice_20261111T0505Z/paired_suite.json",
+  "sha256": "c358d1ed05b6910cb56598456479da87e501c7fceda7e799a45b56718edb534b",
+  "spec": "outputs/eval/v16_choice_20261111T0505Z/paired_spec.json",
+  "spec_sha256": "c443aac264e517ffa389bde43b97594bed38aec1b3b22f8a9cacc5b3a7077f4a",
+  "tool_sha256": "54d17a846355ae4790f842513eb7c0f90636ed2cf8311d781f7b8333a0d23c6d"
+ },
+ "timing": {
+  "protocol_created_utc": "2026-11-10T21:34:54Z",
+  "first_fix1_dev_output_utc": "2026-11-11T03:08:55Z",
+  "protocol_before_first_fix1_output_seconds": 20041
+ },
+ "created_utc": "2026-11-11T05:04:56Z",
+ "next": "STOP. The test look is not started by this tool."
+}

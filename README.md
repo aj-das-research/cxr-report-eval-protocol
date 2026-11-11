@@ -15,11 +15,11 @@ records and no model weights.
 | `20261110T2155_v16_secondary_outcomes_addendum.md` | `f1f901103b921a492942359a8c24294eac20ce6405b8d0dbd778b471695b81d0` | Pre-look secondary outcomes (descriptive): held-out labellers, grounded baselines, classifier only |
 | `fusion_rule_1.json` | `dfa107df5c7b26c03791a58cfe5218baeaef7160419c29da3c145b59675ae4cb` | Frozen fusion decision rule (fitted on development data only) |
 | `20261101T1745_s11_external_eval_protocol.json` | `82cd21e086c1824d24f8d1d5069053c1556bf0a99d525de8342798efbb6e5f0e` | Labelling protocol both looks use |
+| `20261111T0504_v16_pin_addendum.json` | `21da4bf5e891e3e14ec23dd3fd67288345b82a0d0cd54a2b8a6a38f30ccbc12e` | v16 pin addendum: hashes of the code written after the v16 freeze (2026-11-11 05:04 UTC) |
+| `20261111T0505_v16_generator_choice.json` | `db66b2b86917c9fdae19cc26f9062f0721aa0b47a01552ca6edb17282ba87495` | Frozen generator choice, made mechanically on development data by the v16 selection rule: the v15 generator is kept (the retrained generator's selection metric, 0.4331, is not greater than 0.4367) |
 
-## What will be added before the second look
+## Status before the second look
 
-The following are committed here before any v16 test read:
-- the v16 pin addendum (the hashes of the code written after the freeze);
-- the frozen generator choice (made mechanically on development data).
+The v16 pin addendum and the frozen generator choice above were committed here before any v16 test read.
 
 The results of both looks are reported in full in the paper, whatever their direction.

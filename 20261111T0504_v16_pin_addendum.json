@@ -1,0 +1,96 @@
+{
+ "version": "v16-pin-addendum-1",
+ "v16": "docs/reports/S11/20261110T2140_s11_external_eval_protocol_v16.json",
+ "v16_sha256": "f5e91838c80b16113a1e25352b32f34239fbaec76ca4f7dd2ca943b833132c83",
+ "created_utc": "2026-11-11T05:04:39Z",
+ "roles": {
+  "fusion": {
+   "files": [
+    "tools/v16_guard.py",
+    "jobs/v16_guarded.sh",
+    "tools/v16_test_look.sh",
+    "src/swrd/eval/fusion_test.py",
+    "jobs/v16_fusion_chain.sh",
+    "jobs/sota_constrained.sh"
+   ],
+   "dirs": []
+  },
+  "tb2_inputs": {
+   "files": [
+    "tools/v16_guard.py",
+    "jobs/v16_guarded.sh",
+    "tools/v16_test_look.sh"
+   ],
+   "dirs": []
+  },
+  "sample": {
+   "files": [
+    "tools/v16_guard.py",
+    "jobs/v16_guarded.sh",
+    "tools/v16_test_look.sh"
+   ],
+   "dirs": []
+  },
+  "label": {
+   "files": [
+    "tools/v16_guard.py",
+    "jobs/v16_guarded.sh",
+    "tools/v16_test_look.sh"
+   ],
+   "dirs": []
+  },
+  "score": {
+   "files": [
+    "tools/v16_guard.py",
+    "jobs/v16_guarded.sh",
+    "tools/v16_test_look.sh"
+   ],
+   "dirs": []
+  },
+  "rq": {
+   "files": [
+    "tools/v16_guard.py",
+    "jobs/v16_guarded.sh",
+    "tools/v16_test_look.sh",
+    "tools/v16_ref_manifest.py",
+    "tools/v16_rq_aggregate.py",
+    "src/swrd/eval/secondary_test.py",
+    "src/swrd/eval/ctrl_llm_label.py",
+    "configs/ctrl/llm_labeller_1.yaml",
+    "jobs/ctrl_llm_label.sh",
+    "tools/ctrl_c5_rule_label.py",
+    "jobs/v16_rule_label.sh"
+   ],
+   "dirs": []
+  },
+  "choose": {
+   "files": [
+    "tools/v16_guard.py",
+    "jobs/v16_guarded.sh",
+    "tools/v16_test_look.sh",
+    "tools/v16_select_generator.py",
+    "tools/v16_fix1_fusion_dev.sh"
+   ],
+   "dirs": []
+  }
+ },
+ "files": {
+  "tools/v16_guard.py": "589de3d6e8699da7dac7397e247dbb91d8112d51c9d3b5efb9f12de12f488ea4",
+  "jobs/v16_guarded.sh": "48f447299697e74c7f1fb408067ff33e5c76d3f69cd8597c3b50150447b98ba3",
+  "tools/v16_test_look.sh": "b3659c10aece965fdcaffc7e9eed2fdefdc0249190322286600a8c9da1ca24ef",
+  "src/swrd/eval/fusion_test.py": "ec9256984a30f879175df4c9e06bcb4aa2c5a1d4dba77ab59807ccbe928a0df4",
+  "jobs/v16_fusion_chain.sh": "ee721958444df45cedeb369150d8d7d91248a39f9d2cbd706b9fbee5d6ea5ac3",
+  "jobs/sota_constrained.sh": "0fd28e230951069f4c3987f9e5c43912be8cd85f8b764de334bb5284355dd180",
+  "tools/v16_ref_manifest.py": "2b56f39f383a7b18a7af1e91c1a09b068ddc15fdadca0549ad0dc3abef405ea2",
+  "tools/v16_rq_aggregate.py": "bf54a437de45438169a8ac8b16131333788dabc1e8249ed856e900ee447f5ee6",
+  "src/swrd/eval/secondary_test.py": "658a4e2c3ebf69bee7f92bd61073d79aa9ab0a54f9b7070af2f600da61418125",
+  "src/swrd/eval/ctrl_llm_label.py": "e80b12ebcfd5a3e3eb79882e218dcd8bf5d317a62efc25fde6b5a94f3cc75ad6",
+  "configs/ctrl/llm_labeller_1.yaml": "59d8328bc25a27c24bb1d7a019e761fa5d9419ba4a87a288eea1c9d7ed362a81",
+  "jobs/ctrl_llm_label.sh": "46ca8acfd69efe2a7f6b7dd0552ed48ef67f0333b8a12f113bb0871da7453ed6",
+  "tools/ctrl_c5_rule_label.py": "c6842429521abdbe5b5f861cc739d0b2c5930ef42d5277e67c1401ed46d98bac",
+  "jobs/v16_rule_label.sh": "55552325c9c0c85533f6ead1a4dd47d8f5ab7e01172351b6be34b93f7eca041c",
+  "tools/v16_select_generator.py": "065f208fbe4c986cb5f31769faca0143f14bb55b5b2421531427a1602ccf0fac",
+  "tools/v16_fix1_fusion_dev.sh": "14f7c39b3ad1a6cb355d5a2bc699d6b6f24056c61af3e8c94a2e5620923ea860"
+ },
+ "dirs": {}
+}
